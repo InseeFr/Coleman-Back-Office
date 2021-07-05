@@ -54,8 +54,6 @@ public class ManagementMonitoringInfoServiceTest {
 		Upload upload = new Upload();
 		upload.setDate((long) 100);
 
-//		Mockito.when(ueService.findByIdUe("A00000789")).thenReturn(null);
-
 		assertThrows(RessourceNotFoundException.class, () -> {managementMonitoringInfoService.saveIhm(idCampagne, managementMonitoringInfoDto, upload);});
 	}
 
@@ -65,7 +63,6 @@ public class ManagementMonitoringInfoServiceTest {
 		managementMonitoringInfoDto.setIdSu("B00000789");
 		managementMonitoringInfoDto.setStatus(TypeManagementMonitoringInfo.PARTIELINT);
 
-		//Mockito.when(ueService.findByIdUe("B00000789")).thenReturn(null);
 		assertThrows(RessourceNotFoundException.class, () -> {managementMonitoringInfoService.saveBatch(null, managementMonitoringInfoDto);});
 
 	}
@@ -83,8 +80,6 @@ public class ManagementMonitoringInfoServiceTest {
 		managementMonitoringInfo.setStatus(TypeManagementMonitoringInfo.INITLA);
 		managementMonitoringInfoList.add(managementMonitoringInfo);
 		su.setManagementMonitoringInfos(managementMonitoringInfoList);
-
-	//	Mockito.when(ueService.findByIdUe("B00000123")).thenReturn(su);
 
 		assertThrows(RessourceNotFoundException.class, () -> {managementMonitoringInfoService.saveBatch(null, managementMonitoringInfoDto);});
 
