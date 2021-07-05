@@ -24,19 +24,19 @@ public class RestMonitoring {
 
 	@GetMapping(value = "/campaigns/{idCampaign}/monitoring/progress", produces = "application/json")
 	public JSONCollectionWrapper<BatchProgress> getDataForProgress(@PathVariable String idCampaign) {
-		LOGGER.info("Request GET for monitoring table for campaign : {}" + idCampaign);
+		LOGGER.info("Request GET for monitoring table for campaign : {}", idCampaign);
 		return suivi.getProgress(idCampaign);
 	}
 
 	@GetMapping(value = "campaigns/{idCampaign}/monitoring/follow-up", produces = "application/json")
 	public JSONCollectionWrapper<UpRow> getDataToFollowUp(@PathVariable String idCampaign) {
-		LOGGER.info("Request GET for following table for campaign : {}" + idCampaign);
+		LOGGER.info("Request GET for following table for campaign : {}", idCampaign);
 		return suivi.getFollowUp(idCampaign);
 	}
 
 	@GetMapping(value = "campaigns/{idCampaign}/extraction", produces = "application/json")
 	public JSONCollectionWrapper<ExtractionRow> provideDataForExtraction(@PathVariable String idCampaign) {
-		LOGGER.info("Request GET for extraction of campaign : " + idCampaign);
+		LOGGER.info("Request GET for extraction of campaign : {}", idCampaign);
 		return suivi.getExtraction(idCampaign);
 	}
 }

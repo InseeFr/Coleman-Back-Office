@@ -77,8 +77,8 @@ keycloak.bearer-only=true
 keycloak.principal-attribute:preferred_username
 
 coleman.environnement="environnement local"
-fr.insee.coleman.ldap.services.uri.hote=https://contacts.insee.test
-fr.insee.coleman.ldap.services.uri.port=443
+fr.insee.coleman.ldap.services.uri.host=https://localhost
+fr.insee.coleman.ldap.services.uri.port=2000
 fr.insee.coleman.ldap.externe.server.login=coleman
 fr.insee.coleman.ldap.externe.server.pw=coleman
 fr.insee.coleman.ldap.externe.domaineGestion=coleman

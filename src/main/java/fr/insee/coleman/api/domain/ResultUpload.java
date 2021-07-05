@@ -21,12 +21,12 @@ public class ResultUpload {
 		listIdKO = new ArrayList<>();
 	}
 
-	public void ajouterIdOk(String idOk) {
+	public void addIdOk(String idOk) {
 		ResultUploadValidInfo validInfo = new ResultUploadValidInfo(idOk);
 		listIdOK.add(validInfo);
 	}
 
-	public void ajouterIdKo(String idKo, String errorType) {
+	public void addIdKo(String idKo, String errorType) {
 		ResultUploadErrorInfo errorInfo = new ResultUploadErrorInfo(idKo, errorType);
 		listIdKO.add(errorInfo);
 	}

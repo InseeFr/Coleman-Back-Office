@@ -20,7 +20,7 @@ public class MailControlService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MailControlService.class);
 
-	@Value("${fr.insee.coleman.ldap.services.uri.hote}")
+	@Value("${fr.insee.coleman.ldap.services.uri.host}")
 	public String serviceContactBaseUrl;
 
 	@Value("${fr.insee.coleman.ldap.services.uri.port}")

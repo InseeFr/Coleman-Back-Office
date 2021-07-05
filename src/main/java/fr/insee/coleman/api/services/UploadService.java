@@ -57,11 +57,11 @@ public class UploadService {
 			String identifier = (mmDto.getIdSu() != null) ? mmDto.getIdSu() : mmDto.getIdContact();
 			try {
 				liste.add(managementMonitoringInfoService.saveIhm(idCampaign, mmDto, up));
-				result.ajouterIdOk(identifier);
+				result.addIdOk(identifier);
 			} catch (RessourceNotFoundException rnt) {
 				LOGGER.error("Error in request");
 				LOGGER.info("Info: id KO " + rnt.getMessage());
-				result.ajouterIdKo(identifier, "RessourceNotFound");
+				result.addIdKo(identifier, "RessourceNotFound");
 			}
 		}
 		up.setManagementMonitoringInfos(liste);
@@ -86,7 +86,7 @@ public class UploadService {
 	}
 
 	public List<Upload> findAllByIdCampaign(String idCampaign) {
-		// Keeps the uploads which first ISQ belongs to the survey
+		// Keeps the uploads which first managementMonitoringInfo belongs to the survey
 		return uploadRepository.findAll().stream().filter(upload -> !upload.getManagementMonitoringInfos().isEmpty())
 				.filter(upload -> upload.getManagementMonitoringInfos().stream().findFirst().get().getSurveyUnit()
 						.getCampaign().getId().equals(idCampaign))
@@ -100,7 +100,7 @@ public class UploadService {
 	public void delete(Upload up) {
 		uploadRepository.delete(up);
 	}
-	// Checks that the ISG of an upload belong to the same campaign
+	// Checks that the managementMonitoringInfo of an upload belong to the same campaign
 	public boolean checkUploadIsValid(String idCampaign, UploadDto upload) {
 		List<ManagementMonitoringInfoDto> mmDtos = upload.getData();
 		for (ManagementMonitoringInfoDto mmDto : mmDtos) {
@@ -112,7 +112,7 @@ public class UploadService {
 	}
 
 	/**
-	 * Verifie que l'upload se déroule pendant la campaign
+	 * Check that upload occurs during campaign
 	 * 
 	 * @param idCampaign
 	 * @param timestamp

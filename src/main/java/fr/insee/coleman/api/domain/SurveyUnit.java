@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 @Entity
 @Table(name = "survey_unit")
-// @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @IdClass(SurveyUnitId.class)
 @JsonRootName(value = "surveyUnit")
 public class SurveyUnit {
@@ -27,7 +26,6 @@ public class SurveyUnit {
 	@Id
 	@Column
 	@JsonProperty("idSu")
-	// @EqualsAndHashCode.Include
 	private String idSu;
 
 	@JsonBackReference
@@ -55,14 +53,12 @@ public class SurveyUnit {
 	@JoinColumn(name = "idCampaign", referencedColumnName = "id", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JsonProperty(access = Access.READ_ONLY)
-	// Other annotation ???
 	private Campaign campaign;
 
 	public SurveyUnit() {
 		super();
 	}
 
-    //TODO check constructor, two fields idSu?
 	public SurveyUnit(String idSu, List<ManagementMonitoringInfo> managementMonitoringInfos, String idContact,
 			String lastname, String firstname, String address, int batchNumber, Campaign campaign) {
 		super();

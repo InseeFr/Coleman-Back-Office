@@ -105,16 +105,16 @@ public class ManagementMonitoringInfoService {
 			String id = mm.getIdSu() != null ? mm.getIdSu() : mm.getIdContact();
 			try {
 				saveBatch(idCampaign, mm);
-				result.ajouterIdOk(id);
+				result.addIdOk(id);
 
 			} catch (DuplicateResourceException e) {
-				result.ajouterIdOk(id);
+				result.addIdOk(id);
 
 			} catch (RessourceNotFoundException e) {
-				result.ajouterIdKo(id, "RessourceNotFound");
+				result.addIdKo(id, "RessourceNotFound");
 
 			} catch (RessourceNotValidatedException e) {
-				result.ajouterIdKo(id, "RessourceNoneValide");
+				result.addIdKo(id, "RessourceNoneValide");
 			}
 		}
 

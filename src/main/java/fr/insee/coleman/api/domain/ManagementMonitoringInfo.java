@@ -50,7 +50,6 @@ public class ManagementMonitoringInfo {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_upload")
-	// @JsonIgnore
 	@JsonManagedReference
 	private Upload upload;
 

@@ -83,7 +83,7 @@ public class RestAuthBasicTest {
 	void testFindCampaign() throws Exception {
 		RestAssured.port = port;
 		given().auth().preemptive().basic("ABC", "abc").when().get("/campaigns").then().statusCode(200).and().assertThat()
-				.body("datas[0].id", equalTo("simpsons2021x00"));
+				.body("datas[0].id", equalTo("SIMPSONS2021X00"));
 
 	}
 
@@ -97,8 +97,8 @@ public class RestAuthBasicTest {
 	@Test
 	@Order(2)
 	void testFindCampaignById() throws Exception {
-		given().auth().preemptive().basic("ABC", "abc").when().get("/campaigns/simpsons2021x00").then().statusCode(200).and()
-				.assertThat().body("id", equalTo("simpsons2021x00"));
+		given().auth().preemptive().basic("ABC", "abc").when().get("/campaigns/SIMPSONS2021X00").then().statusCode(200).and()
+				.assertThat().body("id", equalTo("SIMPSONS2021X00"));
 
 	}
 

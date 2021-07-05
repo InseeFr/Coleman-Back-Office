@@ -47,9 +47,9 @@ public class SurveyUnitService {
 		for (SurveyUnitDto su : sus) {
 			try {
 				intitializeSurveyUnits(campaign, su);
-				result.ajouterIdOk(su.getIdSu());
+				result.addIdOk(su.getIdSu());
 			} catch (DuplicateResourceException e) {
-				result.ajouterIdKo(su.getIdSu(), "RessourceInDouble");
+				result.addIdKo(su.getIdSu(), "RessourceInDouble");
 			}
 		}
 		return result;
@@ -75,34 +75,31 @@ public class SurveyUnitService {
 	}
 
 	public TypeManagementMonitoringInfo determineState(SurveyUnit su) {
-		HashSet<TypeManagementMonitoringInfo> etats = new HashSet<TypeManagementMonitoringInfo>();
+		HashSet<TypeManagementMonitoringInfo> states = new HashSet<>();
 		for (ManagementMonitoringInfo isg : managementMonitoringInfoService.findBySurveyUnit(su)) {
-			etats.add(isg.getStatus());
+			states.add(isg.getStatus());
 		}
-		if (etats.contains(TypeManagementMonitoringInfo.REFUSAL)) {
+		if (states.contains(TypeManagementMonitoringInfo.REFUSAL)) {
 			return TypeManagementMonitoringInfo.REFUSAL;
-		} else if (etats.contains(TypeManagementMonitoringInfo.VALINT)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.VALINT)) {
 			return TypeManagementMonitoringInfo.VALINT;
-		} else if (etats.contains(TypeManagementMonitoringInfo.VALPAP)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.VALPAP)) {
 			return TypeManagementMonitoringInfo.VALPAP;
-		} else if (etats.contains(TypeManagementMonitoringInfo.HC)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.HC)) {
 			return TypeManagementMonitoringInfo.HC;
-		} else if (etats.contains(TypeManagementMonitoringInfo.PARTIELINT)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.PARTIELINT)) {
 			return TypeManagementMonitoringInfo.PARTIELINT;
-		} else if (etats.contains(TypeManagementMonitoringInfo.WASTE)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.WASTE)) {
 			return TypeManagementMonitoringInfo.WASTE;
-		} else if (etats.contains(TypeManagementMonitoringInfo.PND)) {
+		} else if (states.contains(TypeManagementMonitoringInfo.PND)) {
 			return TypeManagementMonitoringInfo.PND;
 		}
 		return TypeManagementMonitoringInfo.INITLA;
 	}
 
 	public List<TypeManagementMonitoringInfo> getStatesList(SurveyUnit su) {
-
-		List<TypeManagementMonitoringInfo> liste = managementMonitoringInfoService.findBySurveyUnit(su).stream().map((isg) -> isg.getStatus())
+		return managementMonitoringInfoService.findBySurveyUnit(su).stream().map(ManagementMonitoringInfo::getStatus)
 				.collect(Collectors.toList());
-
-		return liste;
 	}
 
 	public Optional<SurveyUnit> findById(long id) {
@@ -151,7 +148,7 @@ public class SurveyUnitService {
 	public void deleteByCampaignId(String idCampaign) {
 		List<SurveyUnit> suToDelete = surveyUnitRepository.findByCampaignId(idCampaign);
 		List<ManagementMonitoringInfo> mmToDelete = suToDelete.stream().map(su -> managementMonitoringInfoService.findBySurveyUnit(su))
-				.flatMap(list -> list.stream()).collect(Collectors.toList());
+				.flatMap(Collection::stream).collect(Collectors.toList());
         managementMonitoringInfoService.deleteAll(mmToDelete);
 		surveyUnitRepository.deleteAll(suToDelete);
 	}

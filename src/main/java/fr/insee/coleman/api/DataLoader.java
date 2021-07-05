@@ -50,7 +50,7 @@ public class DataLoader implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments arg0) throws Exception {
 		if(isDevProfile() || isTestProfile()) {
-			if (surveyUnitService.findAllSurveyUnits().size() != 0) {
+			if (!surveyUnitService.findAllSurveyUnits().isEmpty()) {
 				LOGGER.info("Data already exists - no test data loaded");
 				return;
 			}
@@ -69,20 +69,18 @@ public class DataLoader implements ApplicationRunner {
 	
 			// Creating campaigns
 			campaignService.save(
-					new Campaign("simpsons2021x00","Survey on the Simpsons tv show 2021", 1605909600000l, 1640995199000l));
+					new Campaign("SIMPSONS2021X00","Survey on the Simpsons tv show 2021", 1605909600000l, 1640995199000l));
 			campaignService.save(
-					new Campaign("vqs2021x00","Everyday life and health survey 2021", 1605909600000l, 1640995199000l));
+					new Campaign("VQS2021X00","Everyday life and health survey 2021", 1605909600000l, 1640995199000l));
 			campaignService.save(
-					new Campaign("simpsons2022x00","Survey on the Simpsons tv show 2022", 1605909600000l, 1607644799000l));
-			// campagneService.enregistrer(new Campagne("fpe", "Enquête auprès des salariés
-			// de l'État", null, null));
+					new Campaign("SIMPSONS2022X00","Survey on the Simpsons tv show 2022", 1605909600000l, 1607644799000l));
 	
 			// Test files names
-			String smallInitSampleInputFileName = "polymoog-recette-small-init.csv";
-			String smallSampleInputFileName = "polymoog-recette-small.csv";
+			String smallInitSampleInputFileName = "sample-recette-small-init.csv";
+			String smallSampleInputFileName = "sample-recette-small.csv";
 	
 			// Map filename - campaign
-			HashMap<String, String> fileNameForCampagne = new HashMap<String, String>();
+			HashMap<String, String> fileNameForCampagne = new HashMap<>();
 			fileNameForCampagne.put("simpsons2021x00", smallInitSampleInputFileName);
 			fileNameForCampagne.put("vqs2021x00", smallSampleInputFileName);
 			fileNameForCampagne.put("simpsons2022x00", smallSampleInputFileName);
@@ -105,7 +103,7 @@ public class DataLoader implements ApplicationRunner {
 	
 					for (String str : csvList) {
 						String[] split = str.split(";", -1);
-						listSu.add(convertToSurveyUnit((String[]) Arrays.copyOfRange(split, 0, 7)));
+						listSu.add(convertToSurveyUnit(Arrays.copyOfRange(split, 0, 7)));
 						managementMonitoringInfoListToCreate.add(split);
 					}
 	
@@ -144,13 +142,13 @@ public class DataLoader implements ApplicationRunner {
 
 	private SurveyUnit convertToSurveyUnit(String[] split) {
 		String idContact = split[0].trim();
-		String id_SU = split[1].trim();
+		String idSu = split[1].trim();
 		int numeroDeLot = Integer.parseInt(split[2].trim());
 		String lastName = split[3].trim();
 		String firstName = split[4].trim();
 		String address = split[5].trim();
 
-		return new SurveyUnit(id_SU, null, idContact, lastName, firstName, address, numeroDeLot, null);
+		return new SurveyUnit(idSu, null, idContact, lastName, firstName, address, numeroDeLot, null);
 	}
 	
 

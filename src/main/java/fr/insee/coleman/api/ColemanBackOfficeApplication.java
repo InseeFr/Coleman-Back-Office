@@ -36,7 +36,7 @@ public class ColemanBackOfficeApplication extends SpringBootServletInitializer {
 	public static void setProperties() {
 		System.setProperty("spring.config.location",
 				"classpath:/,"
-        + "file:///${catalina.base}/webapps/colemanbo.properties");
+        + "file:///${catalina.base}/webapps/colempil.properties");
 	}
 
 	@EventListener

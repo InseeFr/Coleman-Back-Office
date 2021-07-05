@@ -27,31 +27,7 @@ public class SurveyUnitServiceTest {
 
 	@InjectMocks
 	private SurveyUnitService surveyUnitService;
-	
-		
-//	@Test
-//	public void testEstARelancerFalseCarTropRelance() throws Exception {
-//		SurveyUnit suTest = new SurveyUnit();
-//		List<ManagementMonitoringInfo> managementMonitoringInfoList = new ArrayList<ManagementMonitoringInfo>();
-//		ManagementMonitoringInfo managementMonitoringInfo1 = new ManagementMonitoringInfo();
-//		managementMonitoringInfo1.setStatus(TypeManagementMonitoringInfo.INITLA);
-//		managementMonitoringInfoList.add(managementMonitoringInfo1);
-//		ManagementMonitoringInfo managementMonitoringInfo2 = new ManagementMonitoringInfo();
-//		managementMonitoringInfo2.setStatus(TypeManagementMonitoringInfo.RELANCE);
-//		managementMonitoringInfoList.add(managementMonitoringInfo2);
-//		ManagementMonitoringInfo managementMonitoringInfo3 = new ManagementMonitoringInfo();
-//		managementMonitoringInfo3.setStatus(TypeManagementMonitoringInfo.RELANCE);
-//		managementMonitoringInfoList.add(managementMonitoringInfo3);
-//		suTest.setManagementMonitoringInfos(managementMonitoringInfoList);
-//
-//		Mockito.when(managementMonitoringInfoService.findBySurveyUnit(suTest)).thenReturn(suTest.getManagementMonitoringInfos());
-//
-//		Boolean actual = ueService.estARelancer(suTest);
-//		
-//		System.out.println(managementMonitoringInfoList.toString());
-//
-//		Assert.assertEquals(false, actual);
-//	}
+
 	
 	@Test
 	public void testDetermineStateRefusal() throws Exception {
