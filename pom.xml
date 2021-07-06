@@ -25,7 +25,7 @@
 		<log4j.version>2.12.1</log4j.version>
 		<maven.compiler.release>11</maven.compiler.release>
 		<testcontainers.version>1.15.2</testcontainers.version>
-		<insee.ldap.version>4.0.0</insee.ldap.version>
+		<insee.ldap.version>4.1.0</insee.ldap.version>
 	</properties>
 	
 	<dependencies>
