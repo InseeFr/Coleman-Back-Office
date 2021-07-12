@@ -68,6 +68,9 @@ fr.insee.coleman.persistence.database.user = coleman
 fr.insee.coleman.persistence.database.password = coleman
 fr.insee.coleman.persistence.database.driver = org.postgresql.Driver
 fr.insee.coleman.defaultSchema=public
+fr.insee.coleman.ddl-auto=update or create or create-drop or validate (only in dev)
+
+
 #Keycloak configuration
 keycloak.realm=insee-realm
 keycloak.resource=coleman

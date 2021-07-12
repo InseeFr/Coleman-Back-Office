@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import fr.insee.ctsc.ldap.xml.beans.Contact;
+import fr.insee.coleman.api.domain.Contact;
 
 @Service
 public class MailControlService {

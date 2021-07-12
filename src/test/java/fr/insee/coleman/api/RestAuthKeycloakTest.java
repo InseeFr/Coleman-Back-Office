@@ -49,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import fr.insee.coleman.api.domain.Campaign;
+import fr.insee.coleman.api.domain.Contact;
 import fr.insee.coleman.api.domain.ManagementMonitoringInfo;
 import fr.insee.coleman.api.domain.SurveyUnit;
 import fr.insee.coleman.api.domain.TypeManagementMonitoringInfo;
@@ -62,7 +63,6 @@ import fr.insee.coleman.api.services.ManagementMonitoringInfoService;
 import fr.insee.coleman.api.services.OrderService;
 import fr.insee.coleman.api.services.SurveyUnitService;
 import fr.insee.coleman.api.services.UploadService;
-import fr.insee.ctsc.ldap.xml.beans.Contact;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
@@ -136,7 +136,7 @@ public class RestAuthKeycloakTest {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 		given().auth().oauth2(accessToken).when().get("/campaigns")
 		.then().statusCode(200)
-		.and().assertThat().body("datas[0].id", equalTo("simpsons2021x00"));
+		.and().assertThat().body("datas[0].id", equalTo("SIMPSONS2021X00"));
 	
 	}
 	
@@ -150,9 +150,9 @@ public class RestAuthKeycloakTest {
 	@Order(2)
 	void testFindCampaignById() throws Exception {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00")
+		given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00")
 		.then().statusCode(200)
-		.and().assertThat().body("id", equalTo("simpsons2021x00"));
+		.and().assertThat().body("id", equalTo("SIMPSONS2021X00"));
 	
 	}
 	
@@ -244,7 +244,7 @@ public class RestAuthKeycloakTest {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 		given().auth().oauth2(accessToken).when().get("/campaigns/contact/A4F2MCB")
 		.then().statusCode(200)
-		.and().assertThat().body("id", hasItem("simpsons2021x00"));
+		.and().assertThat().body("id", hasItem("SIMPSONS2021X00"));
 	
 	}
 	
@@ -260,7 +260,7 @@ public class RestAuthKeycloakTest {
 	@Order(7)
 	void testGetDataForProgress() throws Exception {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/monitoring/progress")
+		given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/monitoring/progress")
 		.then().statusCode(200)
 		.and().assertThat().body("datas[0].nbSu", equalTo(1))
 		.and().assertThat().body("datas[0].batchNumber", equalTo(1))
@@ -284,7 +284,7 @@ public class RestAuthKeycloakTest {
 	@Order(8)
 	void testGetDataForExtraction() throws Exception {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/extraction")
+		given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/extraction")
 		.then().statusCode(200)
 		.and().assertThat().body("datas[0].status", equalTo("INITLA"))
 		.and().assertThat().body("datas[0].dateInfo", equalTo(1605477600000L))
@@ -308,7 +308,7 @@ public class RestAuthKeycloakTest {
 	@Order(9)
 	void testGetDataToFollowUp() throws Exception {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/monitoring/follow-up")
+		given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/monitoring/follow-up")
 		.then().statusCode(200)
 		.and().assertThat().body("datas[0].nb", equalTo(1))
 		.and().assertThat().body("datas[0].freq", equalTo(0))
@@ -335,7 +335,7 @@ public class RestAuthKeycloakTest {
 		.and().assertThat().body("surveyUnit.lastname", equalTo("BOULANGER"))
 		.and().assertThat().body("surveyUnit.address", equalTo("ARTAIX - 71110"))
 		.and().assertThat().body("surveyUnit.batchNumber", equalTo(1))
-		.and().assertThat().body("surveyUnit.campaign.id", equalTo("simpsons2021x00"))
+		.and().assertThat().body("surveyUnit.campaign.id", equalTo("SIMPSONS2021X00"))
 		.and().assertThat().body("surveyUnit.campaign.label", equalTo("Survey on the Simpsons tv show 2021"))
 		.and().assertThat().body("surveyUnit.campaign.collectionStartDate", equalTo(1605909600000L))
 		.and().assertThat().body("surveyUnit.campaign.collectionEndDate", equalTo(1640995199000L))
@@ -357,14 +357,14 @@ public class RestAuthKeycloakTest {
 	@Order(11)
 	void testGetManagementMonitoringInfoByIdSuAndIdCampaign() throws Exception {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/survey-units/9300036162000Z/management-monitoring-infos")
+		given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z/management-monitoring-infos")
 		.then().statusCode(200)
 		.and().assertThat().body("datas[0].idManagementMonitoringInfo", equalTo(1))
 		.and().assertThat().body("datas[0].surveyUnit.idContact", equalTo("A4F2MCB"))
 		.and().assertThat().body("datas[0].surveyUnit.lastname", equalTo("DUPONT"))
 		.and().assertThat().body("datas[0].surveyUnit.address", equalTo("ST CAPRAIS - 03190"))
 		.and().assertThat().body("datas[0].surveyUnit.batchNumber", equalTo(3))
-		.and().assertThat().body("datas[0].surveyUnit.campaign.id", equalTo("simpsons2021x00"))
+		.and().assertThat().body("datas[0].surveyUnit.campaign.id", equalTo("SIMPSONS2021X00"))
 		.and().assertThat().body("datas[0].surveyUnit.campaign.label", equalTo("Survey on the Simpsons tv show 2021"))
 		.and().assertThat().body("datas[0].surveyUnit.campaign.collectionStartDate", equalTo(1605909600000L))
 		.and().assertThat().body("datas[0].surveyUnit.campaign.collectionEndDate", equalTo(1640995199000L))
@@ -396,10 +396,10 @@ public class RestAuthKeycloakTest {
 		 	.contentType("application/json")
 			.body(new ObjectMapper().writeValueAsString(managementMonitoringInfoDto))
 			.when()
-			.post("campaigns/simpsons2021x00/management-monitoring-info")
+			.post("campaigns/SIMPSONS2021X00/management-monitoring-info")
 			.then()
 			.statusCode(201);
-		Collection<ManagementMonitoringInfo> managementMonitoringCollection = managementMonitoringInfoService.findBySurveyUnit(surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "simpsons2021x00"));
+		Collection<ManagementMonitoringInfo> managementMonitoringCollection = managementMonitoringInfoService.findBySurveyUnit(surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "SIMPSONS2021X00"));
 		assertNotNull(managementMonitoringCollection);
 	}
 	
@@ -429,10 +429,10 @@ public class RestAuthKeycloakTest {
 		 	.contentType("application/json")
 			.body(new ObjectMapper().writeValueAsString(List.of(managementMonitoringInfoDto1, managementMonitoringInfoDto2)))
 			.when()
-			.post("campaigns/simpsons2021x00/management-monitoring-infos")
+			.post("campaigns/SIMPSONS2021X00/management-monitoring-infos")
 			.then()
 			.statusCode(202);
-		Collection<ManagementMonitoringInfo> managementMonitoringCollection = managementMonitoringInfoService.findBySurveyUnit(surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "simpsons2021x00"));
+		Collection<ManagementMonitoringInfo> managementMonitoringCollection = managementMonitoringInfoService.findBySurveyUnit(surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "SIMPSONS2021X00"));
 		assertNotNull(managementMonitoringCollection);
 	}
 	
@@ -453,7 +453,7 @@ public class RestAuthKeycloakTest {
 			.then()
 			.statusCode(204);
 		assertTrue(managementMonitoringInfoService.findBySurveyUnit(
-				surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "simpsons2021x00")).isEmpty());
+				surveyUnitService.findByIdSurveyUnitAndIdCampaign("1100001761000Z", "SIMPSONS2021X00")).isEmpty());
 	}
 	
 	/**
@@ -476,7 +476,7 @@ public class RestAuthKeycloakTest {
 	    assertEquals("DUPONT", resp.path("content[0].lastname"));
 	    assertEquals("ST CAPRAIS - 03190", resp.path("content[0].address"));
 	    assertEquals(Integer.valueOf(3), resp.path("content[0].batchNumber"));
-	    assertEquals("simpsons2021x00", resp.path("content[0].campaign.id"));
+	    assertEquals("SIMPSONS2021X00", resp.path("content[0].campaign.id"));
 	    assertEquals("CHLOE", resp.path("content[0].firstName"));
 	    assertEquals("9300036162000Z", resp.path("content[0].idSu"));
 	}
@@ -502,7 +502,7 @@ public class RestAuthKeycloakTest {
 	    assertEquals("FABRES", resp.path("content[0].lastname"));
 	    assertEquals("ST PHAL - 10130", resp.path("content[0].address"));
 	    assertEquals(Integer.valueOf(2), resp.path("content[0].batchNumber"));
-	    assertEquals("simpsons2021x00", resp.path("content[0].campaign.id"));
+	    assertEquals("SIMPSONS2021X00", resp.path("content[0].campaign.id"));
 	    assertEquals("THIERRY", resp.path("content[0].firstName"));
 	    assertEquals("2100200361000Z", resp.path("content[0].idSu"));
 	}
@@ -520,7 +520,7 @@ public class RestAuthKeycloakTest {
 		RestAssured.port = port;
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 
-		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/survey-units/follow-up");
+		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/follow-up");
 	    resp.then().statusCode(200)
 	    .assertThat().body("datas.size()", is(5));
 	    
@@ -544,14 +544,14 @@ public class RestAuthKeycloakTest {
 		RestAssured.port = port;
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 
-		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/survey-units/1100002861000Z");
+		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z");
 	    resp.then().statusCode(200);   
 	    
 	    assertEquals("Q2PVW6B", resp.path("idContact"));
 	    assertEquals("RENARD", resp.path("lastname"));
 	    assertEquals("TREON - 28500", resp.path("address"));
 	    assertEquals(Integer.valueOf(3), resp.path("batchNumber"));
-	    assertEquals("simpsons2021x00", resp.path("campaign.id"));
+	    assertEquals("SIMPSONS2021X00", resp.path("campaign.id"));
 	    assertEquals("BERTRAND", resp.path("firstName"));
 	    assertEquals("1100002861000Z", resp.path("idSu"));
 
@@ -570,16 +570,16 @@ public class RestAuthKeycloakTest {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 		List<SurveyUnitDto> list = new ArrayList<>();
 		SurveyUnitDto su1 = new SurveyUnitDto("AAidSuTest", "idContactTest", "lastnameTest", "firstNameTest",
-				"addressTest", 2, "simpsons2021x00");
+				"addressTest", 2, "SIMPSONS2021X00");
 		SurveyUnitDto su2 = new SurveyUnitDto("AAidSuTest2", "idContactTest2", "lastnameTest2", "firstNameTest2",
-				"addressTest2", 1, "simpsons2021x00");
+				"addressTest2", 1, "SIMPSONS2021X00");
 		list.add(su1);
 		list.add(su2);
 		
 		Response resp = given().auth().oauth2(accessToken)
 				.contentType("application/json")
 				.body(new ObjectMapper().writeValueAsString(list))
-				.when().post("/campaigns/simpsons2021x00/survey-units");
+				.when().post("/campaigns/SIMPSONS2021X00/survey-units");
 	    resp.then().statusCode(200);   
 	    
 	    assertEquals("AAidSuTest", resp.path("OK[0].id"));
@@ -597,7 +597,7 @@ public class RestAuthKeycloakTest {
 	    assertEquals("firstNameTest", surveyUnit1.getFirstName());
 	    assertEquals("addressTest", surveyUnit1.getAddress());
 	    assertEquals(Integer.valueOf(2), surveyUnit1.getBatchNumber());
-	    assertEquals("simpsons2021x00", surveyUnit1.getCampaign().getId());
+	    assertEquals("SIMPSONS2021X00", surveyUnit1.getCampaign().getId());
 	    
 	    assertEquals("AAidSuTest2", surveyUnit2.getIdSu());
 	    assertEquals("idContactTest2", surveyUnit2.getIdContact());
@@ -605,7 +605,7 @@ public class RestAuthKeycloakTest {
 	    assertEquals("firstNameTest2", surveyUnit2.getFirstName());
 	    assertEquals("addressTest2", surveyUnit2.getAddress());
 	    assertEquals(Integer.valueOf(1), surveyUnit2.getBatchNumber());
-	    assertEquals("simpsons2021x00", surveyUnit2.getCampaign().getId());
+	    assertEquals("SIMPSONS2021X00", surveyUnit2.getCampaign().getId());
 	}
 	
 
@@ -622,13 +622,13 @@ public class RestAuthKeycloakTest {
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 		Upload upload = new Upload(1L, 1111111L, new ArrayList<ManagementMonitoringInfo>());
 		uploadService.saveAndFlush(upload);
-		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("9300036162000Z", "simpsons2021x00");
+		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("9300036162000Z", "SIMPSONS2021X00");
 		ManagementMonitoringInfo mmi = new ManagementMonitoringInfo(
 				null, su, TypeManagementMonitoringInfo.INITLA, 11111L,
 				upload);
 		managementMonitoringInfoService.saveAndFlush(mmi);
 
-		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/simpsons2021x00/uploads");
+		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/uploads");
 	    resp.then().statusCode(200)
 	    .assertThat().body("datas.size()", is(1));  
 	    
@@ -666,14 +666,14 @@ public class RestAuthKeycloakTest {
 			
 			dto.setData(list);
 			
-			SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("2100200361000Z", "simpsons2021x00");
-			SurveyUnit su2 = surveyUnitService.findByIdSurveyUnitAndIdCampaign("4200004052000Z", "simpsons2021x00");
+			SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("2100200361000Z", "SIMPSONS2021X00");
+			SurveyUnit su2 = surveyUnitService.findByIdSurveyUnitAndIdCampaign("4200004052000Z", "SIMPSONS2021X00");
 			
 
 			Response resp = given().auth().oauth2(accessToken)
 					.contentType("application/json")
 					.body(new ObjectMapper().writeValueAsString(dto))
-					.when().post("/campaigns/simpsons2021x00/uploads");
+					.when().post("/campaigns/SIMPSONS2021X00/uploads");
 		    resp.then().statusCode(200);    
 		    
 		    List<ManagementMonitoringInfo> mmiList1 = (List<ManagementMonitoringInfo>) managementMonitoringInfoService.findBySurveyUnit(su);
@@ -723,7 +723,7 @@ public class RestAuthKeycloakTest {
 			Response resp = given().auth().oauth2(accessToken)
 					.contentType("application/json")
 					.body(new ObjectMapper().writeValueAsString(dto))
-					.when().post("/campaigns/simpsons2021x00/uploads/validation");
+					.when().post("/campaigns/SIMPSONS2021X00/uploads/validation");
 		    resp.then().statusCode(200);    
 
 		    assertEquals("true", resp.as(String.class));
@@ -758,7 +758,7 @@ public class RestAuthKeycloakTest {
 		Response resp = given().auth().oauth2(accessToken)
 				.contentType("application/json")
 				.body(new ObjectMapper().writeValueAsString(dto))
-				.when().post("/campaigns/simpsons2021x00/uploads/validation");
+				.when().post("/campaigns/SIMPSONS2021X00/uploads/validation");
 	    resp.then().statusCode(200);    
 
 	    assertEquals("false", resp.as(String.class));
@@ -778,7 +778,7 @@ public class RestAuthKeycloakTest {
 			RestAssured.port = port;
 			String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
 			
-			SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("9300036162000Z", "simpsons2021x00");
+			SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign("9300036162000Z", "SIMPSONS2021X00");
 			
 
 			Response resp = given().auth().oauth2(accessToken)
@@ -802,29 +802,29 @@ public class RestAuthKeycloakTest {
 	*/
 	@Test
 	@Order(25)
-		void testContactMail() throws Exception {
-			String url = "/annuaire/coleman/contact/A4F2MCB";
-			//http://localhost/annuaire/coleman/contact/A4F2MCB
-			Contact contact = new Contact();
-			contact.setPrenom("Test");
-			contact.setNom("Nomtest");
-			contact.setIdentifiant("A4F2MCB");
-			contact.setCivilite("MR");
-			contact.setAdresseMessagerie("test@test.com");
-			contact.setHasPassword(false);
-			clientAndServer = ClientAndServer.startClientAndServer(8081);
-			mockServerClient = new MockServerClient("127.0.0.1", 8081);
-			String expectedBody = new ObjectMapper().writeValueAsString(contact);
-			mockServerClient.when(request().withPath(url))
-					.respond(response().withStatusCode(200)
-							.withHeaders(new Header("Content-Type", "application/json; charset=utf-8"))
-							.withBody(expectedBody));
-			RestAssured.port = port;
-			String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-			Response resp = given().auth().oauth2(accessToken).when().get("/contact/A4F2MCB/mail");
-		    resp.then().statusCode(200);
-		    assertEquals(resp.getBody().asString(), contact.getAdresseMessagerie());
-		}
+	void testContactMail() throws Exception {
+		String url = "/annuaire/coleman/contact/A4F2MCB";
+		//http://localhost/annuaire/coleman/contact/A4F2MCB
+		Contact contact = new Contact();
+		contact.setPrenom("Test");
+		contact.setNom("Nomtest");
+		contact.setIdentifiant("A4F2MCB");
+		contact.setCivilite("MR");
+		contact.setAdresseMessagerie("test@test.com");
+		contact.setHasPassword(false);
+		clientAndServer = ClientAndServer.startClientAndServer(8081);
+		mockServerClient = new MockServerClient("127.0.0.1", 8081);
+		String expectedBody = new ObjectMapper().writeValueAsString(contact);
+		mockServerClient.when(request().withPath(url))
+				.respond(response().withStatusCode(200)
+						.withHeaders(new Header("Content-Type", "application/json; charset=utf-8"))
+						.withBody(expectedBody));
+		RestAssured.port = port;
+		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+		Response resp = given().auth().oauth2(accessToken).when().get("/contact/A4F2MCB/mail");
+	    resp.then().statusCode(200);
+	    assertEquals(resp.getBody().asString(), contact.getAdresseMessagerie());
+	}
 	
 	/***
 	 * This method retreive the access token of the keycloak client
