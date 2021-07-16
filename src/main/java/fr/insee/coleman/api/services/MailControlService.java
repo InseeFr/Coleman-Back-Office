@@ -1,6 +1,7 @@
 package fr.insee.coleman.api.services;
 
 import java.util.Base64;
+import java.util.LinkedHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,12 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import fr.insee.coleman.api.domain.Contact;
 
 @Service
 public class MailControlService {
@@ -57,29 +58,23 @@ public class MailControlService {
 		HttpEntity<String> request = new HttpEntity<>(headers);
 
 		try {
-			ResponseEntity<Contact> response = restTemplate.exchange(url.toString(), HttpMethod.GET, request, Contact.class);
-
-			switch (response.getStatusCodeValue()) {
-			case 200:
-				Contact contact = response.getBody();
-				if (contact != null) {
-					email = contact.getAdresseMessagerie();
-
-					if (email != null) {
-						LOGGER.info("Contact already has an email");
-
-					} else {
-						LOGGER.info("Contact does not yet have an email");
-					}
-				}
-				break;
-
-			default:
-				email = "";
+			ResponseEntity<Object> response = restTemplate.exchange(url.toString(), HttpMethod.GET, request, Object.class);
+			@SuppressWarnings("unchecked")
+			LinkedHashMap<String,String> object = (LinkedHashMap<String, String>) response.getBody();
+			if(object == null || object.isEmpty()) {
+				return ResponseEntity.notFound().build();
+			}
+			if(!HttpStatus.OK.equals(response.getStatusCode())) {
+				return new ResponseEntity<>(response.getStatusCode());
+			}
+			email = object.get("AdresseMessagerie");
+			if (email == null) {
+				LOGGER.info("Contact does not yet have an email");
+				return ResponseEntity.noContent().build();
 			}
 		} catch (HttpClientErrorException e) {
 			LOGGER.error("Error during call of monitoring webservice for contacts");
-			email = "";
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 		return ResponseEntity.ok().body(email);
 

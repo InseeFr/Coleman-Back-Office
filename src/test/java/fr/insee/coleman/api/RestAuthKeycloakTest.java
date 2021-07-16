@@ -49,7 +49,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import fr.insee.coleman.api.domain.Campaign;
-import fr.insee.coleman.api.domain.Contact;
 import fr.insee.coleman.api.domain.ManagementMonitoringInfo;
 import fr.insee.coleman.api.domain.SurveyUnit;
 import fr.insee.coleman.api.domain.TypeManagementMonitoringInfo;
@@ -803,27 +802,30 @@ public class RestAuthKeycloakTest {
 	@Test
 	@Order(25)
 	void testContactMail() throws Exception {
-		String url = "/annuaire/coleman/contact/A4F2MCB";
-		//http://localhost/annuaire/coleman/contact/A4F2MCB
-		Contact contact = new Contact();
-		contact.setPrenom("Test");
-		contact.setNom("Nomtest");
-		contact.setIdentifiant("A4F2MCB");
-		contact.setCivilite("MR");
-		contact.setAdresseMessagerie("test@test.com");
-		contact.setHasPassword(false);
+		String url = "/annuaire/coleman/contact/TTTTTTT";
 		clientAndServer = ClientAndServer.startClientAndServer(8081);
 		mockServerClient = new MockServerClient("127.0.0.1", 8081);
-		String expectedBody = new ObjectMapper().writeValueAsString(contact);
 		mockServerClient.when(request().withPath(url))
 				.respond(response().withStatusCode(200)
 						.withHeaders(new Header("Content-Type", "application/json; charset=utf-8"))
-						.withBody(expectedBody));
+						.withBody("{"
+								+ " \"Identifiant\" : \"TTTTTTT\","
+								+ " \"NomCommun\" : \"Test\","
+								+ " \"DomaineDeGestion\" : \"TEST\","
+								+ " \"AdresseMessagerie\" : \"test@test.com\","
+								+ " \"MotDePasseExiste\" : true,"
+								+ " \"AdressePostale\" : {"
+								+ "  \"LigneUne\" : \"test\","
+								+ "  \"LigneQuatre\" : \"1 rue du test\","
+								+ "  \"LigneSix\" : \"99999 TEST\""
+								+ " },"
+								+ " \"DateCreation\" : 1574860894000"
+								+ "}"));
 		RestAssured.port = port;
 		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-		Response resp = given().auth().oauth2(accessToken).when().get("/contact/A4F2MCB/mail");
+		Response resp = given().auth().oauth2(accessToken).when().get("/contact/TTTTTTT/mail");
 	    resp.then().statusCode(200);
-	    assertEquals(resp.getBody().asString(), contact.getAdresseMessagerie());
+	    assertEquals("test@test.com", resp.getBody().asString());
 	}
 	
 	/***
