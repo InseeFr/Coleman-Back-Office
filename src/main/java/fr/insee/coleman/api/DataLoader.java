@@ -81,9 +81,9 @@ public class DataLoader implements ApplicationRunner {
 	
 			// Map filename - campaign
 			HashMap<String, String> fileNameForCampagne = new HashMap<>();
-			fileNameForCampagne.put("simpsons2021x00", smallInitSampleInputFileName);
-			fileNameForCampagne.put("vqs2021x00", smallSampleInputFileName);
-			fileNameForCampagne.put("simpsons2022x00", smallSampleInputFileName);
+			fileNameForCampagne.put("SIMPSONS2021X00", smallInitSampleInputFileName);
+			fileNameForCampagne.put("VQS2021X00", smallSampleInputFileName);
+			fileNameForCampagne.put("SIMPSONS2022X00", smallSampleInputFileName);
 	
 			for (Campaign campaign : campaignService.getCampaigns()) {
 	

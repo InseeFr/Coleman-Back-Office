@@ -11,7 +11,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: mvn install:install-file -Dfile=lib/ldap-services-xml-bean.jar -DgroupId=fr.insee.ctsc.ldap -DartifactId=ldap-services-xml-beans -Dversion=4.0.0 -Dpackaging=jar
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'

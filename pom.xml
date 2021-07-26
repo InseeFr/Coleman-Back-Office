@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.insee.coleman.api</groupId>
 	<artifactId>coleman-back-office</artifactId>
-	<version>0.9.0</version>
+	<version>0.10.0</version>
 	<packaging>war</packaging>
 	<name>coleman-back-office</name>
 	<description>Back-office services for  Coleman</description>
@@ -184,15 +184,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		
-		<!-- beans contact ldap -->
-		<dependency>
-			<groupId>fr.insee.ctsc.ldap</groupId>
-			<artifactId>ldap-services-xml-beans</artifactId>
-			<type>jar</type>
-			<version>${insee.ldap.version}</version>
-			<scope>compile</scope>
 		</dependency>
 		
 		<!-- @NotBlanck in SurveyUnitDto.java -->
