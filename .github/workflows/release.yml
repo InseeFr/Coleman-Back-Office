@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v2
+      - name: Get current version
+        id: version
+        run: echo "::set-output name=prop::$(mvn -f pom.xml help:evaluate -Dexpression=project.version -q -DforceStdout)"
+      - run: echo ${{steps.version.outputs.prop}}
+      - name: Release snapshot
+        id: release-snapshot
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{steps.version.outputs.prop}}
+          release_name: Release ${{steps.version.outputs.prop}}
+          draft: false
+          prerelease: false
+
