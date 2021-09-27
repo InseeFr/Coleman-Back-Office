@@ -46,15 +46,11 @@ public class CampaignService {
 	}
 
 	public List<Campaign> findOpenedCampaignsByIdec(String idec) throws RessourceNotFoundException {
-		List<Campaign> campaignsFound = surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign).collect(Collectors.toList());
-		List<Campaign> openCampaignsFound =new ArrayList<>();
+
 		Long dateToday = new Date().getTime();
-		campaignsFound.stream().forEach(camp -> {
-			if ((camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)){
-				openCampaignsFound.add(camp);
-			}
-		});
-		return openCampaignsFound;
+		return surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign)
+				.filter(camp->(camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)).collect(Collectors.toList());
+		
 	}
 
 	// Creating and saving the campaign to get the Id
