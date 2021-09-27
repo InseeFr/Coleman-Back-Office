@@ -1,5 +1,6 @@
 package fr.insee.coleman.api.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +43,18 @@ public class CampaignService {
 	
 	public List<Campaign> findContactByIdec(String idec) throws RessourceNotFoundException {
 		return surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign).collect(Collectors.toList());
+	}
+
+	public List<Campaign> findOpenedCampaignsByIdec(String idec) throws RessourceNotFoundException {
+		List<Campaign> campaignsFound = surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign).collect(Collectors.toList());
+		List<Campaign> openCampaignsFound =new ArrayList<>();
+		Long dateToday = new Date().getTime();
+		campaignsFound.stream().forEach(camp -> {
+			if ((camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)){
+				openCampaignsFound.add(camp);
+			}
+		});
+		return openCampaignsFound;
 	}
 
 	// Creating and saving the campaign to get the Id

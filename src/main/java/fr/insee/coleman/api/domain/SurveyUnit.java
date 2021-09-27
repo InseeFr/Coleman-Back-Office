@@ -70,6 +70,7 @@ public class SurveyUnit {
 		this.address = address;
 		this.batchNumber = batchNumber;
 		this.campaign = campaign;
+
 	}
 
 	public boolean equals(Object objetctToCompare) {
