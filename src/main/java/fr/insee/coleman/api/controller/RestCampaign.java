@@ -2,6 +2,8 @@ package fr.insee.coleman.api.controller;
 
 import java.util.List;
 
+import fr.insee.coleman.api.domain.RedirectUnit;
+import fr.insee.coleman.api.services.SurveyUnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class RestCampaign {
 
 	@Autowired
 	CampaignService campaignService;
+
+	@Autowired
+	SurveyUnitService surveyUnitService;
 
 	/* GET /campaigns : To retrieve the list of ongoing campaigns */
 	@GetMapping(value = "/campaigns", produces = "application/json")
@@ -68,10 +73,14 @@ public class RestCampaign {
 		return campaignService.findContactByIdec(idec);
 	}
 
-	@GetMapping(value = "/campaigns/open/contact/{idec}", produces = "application/json")
-	public List<String> getOpenCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
+	@GetMapping(value = "/campaigns/redirect-unit/contact/{idec}", produces = "application/json")
+	public RedirectUnit getOpenCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
+		RedirectUnit ru =new RedirectUnit();
 		LOGGER.info("Request GET with idec : {}", idec);
-		return campaignService.findOpenedCampaignsByIdec(idec);
+		ru.setOpenedCampaignsIds(campaignService.findOpenedCampaignsByIdec(idec));
+		ru.setIdContact(idec);
+		ru.setIdUe(surveyUnitService.findByIdContact(idec).getIdSu());
+		return ru;
 	}
 
 	/*
