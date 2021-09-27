@@ -69,7 +69,7 @@ public class RestCampaign {
 	}
 
 	@GetMapping(value = "/campaigns/open/contact/{idec}", produces = "application/json")
-	public List<Campaign> getOpenCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
+	public List<String> getOpenCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
 		LOGGER.info("Request GET with idec : {}", idec);
 		return campaignService.findOpenedCampaignsByIdec(idec);
 	}

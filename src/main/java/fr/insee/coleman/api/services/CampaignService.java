@@ -44,11 +44,11 @@ public class CampaignService {
 		return surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign).collect(Collectors.toList());
 	}
 
-	public List<Campaign> findOpenedCampaignsByIdec(String idec) throws RessourceNotFoundException {
+	public List<String> findOpenedCampaignsByIdec(String idec) throws RessourceNotFoundException {
 
 		Long dateToday = new Date().getTime();
 		return surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign)
-				.filter(camp->(camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)).collect(Collectors.toList());
+				.filter(camp->(camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)).map(Campaign::getId).collect(Collectors.toList());
 
 	}
 
