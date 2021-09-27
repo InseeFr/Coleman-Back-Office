@@ -1,6 +1,5 @@
 package fr.insee.coleman.api.services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +49,7 @@ public class CampaignService {
 		Long dateToday = new Date().getTime();
 		return surveyUnitService.findMultipleByIdContact(idec).stream().map(SurveyUnit::getCampaign)
 				.filter(camp->(camp.getCollectionEndDate()>dateToday) && (camp.getCollectionStartDate()<dateToday)).collect(Collectors.toList());
-		
+
 	}
 
 	// Creating and saving the campaign to get the Id

@@ -68,6 +68,12 @@ public class RestCampaign {
 		return campaignService.findContactByIdec(idec);
 	}
 
+	@GetMapping(value = "/campaigns/open/contact/{idec}", produces = "application/json")
+	public List<Campaign> getOpenCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
+		LOGGER.info("Request GET with idec : {}", idec);
+		return campaignService.findOpenedCampaignsByIdec(idec);
+	}
+
 	/*
 	 * DELETE /campaigns : Deletes the campaign with the given idCampaign. Checks if
 	 * campaign exists : if not, throws NotFoundException Checks if campaign is finished
