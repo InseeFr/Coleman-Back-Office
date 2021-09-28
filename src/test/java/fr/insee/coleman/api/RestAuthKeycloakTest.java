@@ -827,6 +827,18 @@ public class RestAuthKeycloakTest {
 	    resp.then().statusCode(200);
 	    assertEquals("test@test.com", resp.getBody().asString());
 	}
+
+	/*@Test
+	@Order(26)
+	void testGetRedirectUnit() throws Exception {
+
+		String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+		Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/redirect-unit/contact/A4F2MCB");
+		resp.then().statusCode(200).
+				assertThat().body("idUe", hasItem("SIMPSONS2021X00"));
+
+
+	}*/
 	
 	/***
 	 * This method retreive the access token of the keycloak client

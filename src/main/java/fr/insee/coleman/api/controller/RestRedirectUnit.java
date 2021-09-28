@@ -30,7 +30,7 @@ public class RestRedirectUnit {
         LOGGER.info("Request GET with idec : {}", idec);
         ru.setOpenedCampaignsIds(campaignService.findOpenedCampaignsByIdec(idec));
         ru.setIdContact(idec);
-        ru.setIdUe(surveyUnitService.findByIdContact(idec).getIdSu());
+        ru.setIdUe(surveyUnitService.findByIdContactAndIdCampaign(idec,ru.getOpenedCampaignsIds().get(0)).getIdSu());
         return ru;
     }
 }
