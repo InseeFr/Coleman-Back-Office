@@ -5,6 +5,7 @@ import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,6 +22,9 @@ import org.springframework.core.env.MutablePropertySources;
 public class ColemanBackOfficeApplication extends SpringBootServletInitializer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ColemanBackOfficeApplication.class);
+
+	@Value("${spring.profiles.active}")
+	private String profile;
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(ColemanBackOfficeApplication.class);
