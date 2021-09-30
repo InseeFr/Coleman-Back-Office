@@ -44,7 +44,7 @@ import io.restassured.RestAssured;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
 		"fr.insee.pearljam.application.mode = basic" })
-@TestPropertySource(locations = "classpath:application-test.properties")
+//@TestPropertySource(locations = "classpath:application-test.properties")
 public class RestAuthBasicTest {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(RestAuthBasicTest.class);
