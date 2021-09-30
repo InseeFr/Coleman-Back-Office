@@ -54,7 +54,7 @@ public class ColemanBackOfficeApplication extends SpringBootServletInitializer {
                 .map(ps -> ((EnumerablePropertySource<?>) ps).getPropertyNames())
                 .flatMap(Arrays::stream)
                 .distinct()
-                .filter(prop -> !(prop.contains("credentials") || prop.contains("password")))
+                .filter(prop -> !(prop.contains("credentials") || prop.contains("password") || prop.contains("pw")))
                 .filter(prop -> prop.startsWith("fr.insee") || prop.startsWith("logging") || prop.startsWith("keycloak") || prop.startsWith("spring") || prop.startsWith("application"))
                 .sorted()
                 .forEach(prop -> LOG.info("{}: {}", prop, env.getProperty(prop)));
