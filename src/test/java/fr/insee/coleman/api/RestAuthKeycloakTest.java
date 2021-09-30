@@ -72,7 +72,7 @@ import io.restassured.response.Response;
 @Testcontainers
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties= {"fr.insee.pearljam.application.mode = keycloak"})
-@TestPropertySource(locations="classpath:application-test.properties")
+//@TestPropertySource(locations="classpath:application-test.properties")
 public class RestAuthKeycloakTest {
 	
 	static final Logger LOGGER = LoggerFactory.getLogger(RestAuthKeycloakTest.class);
