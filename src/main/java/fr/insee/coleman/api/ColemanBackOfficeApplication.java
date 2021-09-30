@@ -5,6 +5,7 @@ import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,6 +22,9 @@ import org.springframework.core.env.MutablePropertySources;
 public class ColemanBackOfficeApplication extends SpringBootServletInitializer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ColemanBackOfficeApplication.class);
+
+	@Value("${spring.profiles.active}")
+	private String profile;
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(ColemanBackOfficeApplication.class);
@@ -50,7 +54,7 @@ public class ColemanBackOfficeApplication extends SpringBootServletInitializer {
                 .map(ps -> ((EnumerablePropertySource<?>) ps).getPropertyNames())
                 .flatMap(Arrays::stream)
                 .distinct()
-                .filter(prop -> !(prop.contains("credentials") || prop.contains("password")))
+                .filter(prop -> !(prop.contains("credentials") || prop.contains("password") || prop.contains("pw")))
                 .filter(prop -> prop.startsWith("fr.insee") || prop.startsWith("logging") || prop.startsWith("keycloak") || prop.startsWith("spring") || prop.startsWith("application"))
                 .sorted()
                 .forEach(prop -> LOG.info("{}: {}", prop, env.getProperty(prop)));
