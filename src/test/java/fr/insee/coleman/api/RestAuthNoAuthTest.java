@@ -44,7 +44,7 @@ import io.restassured.RestAssured;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
 		"fr.insee.pearljam.application.mode = noauth" })
-@TestPropertySource(locations = "classpath:application-test.properties")
+//@TestPropertySource(locations = "classpath:application-test.properties")
 public class RestAuthNoAuthTest {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(RestAuthNoAuthTest.class);
