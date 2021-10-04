@@ -57,16 +57,21 @@ public class RestAuthKeycloakTest {
 
     public static final String CLIENT_SECRET = "8951f422-44dd-45b4-a6ac-dde6748075d7";
     public static final String CLIENT = "client-web";
+
     static final Logger LOGGER = LoggerFactory.getLogger(RestAuthKeycloakTest.class);
+
     @Container
     public static KeycloakContainer keycloak = new KeycloakContainer().withRealmImportFile("realm.json");
+
     public static ClientAndServer clientAndServer;
     public static MockServerClient mockServerClient;
+
     @SuppressWarnings("rawtypes")
     @Container
     @ClassRule
     public static PostgreSQLContainer postgreSQLContainer = (PostgreSQLContainer) new PostgreSQLContainer("postgres")
             .withDatabaseName("coleman").withUsername("coleman").withPassword("coleman");
+
     @Autowired
     ManagementMonitoringInfoService managementMonitoringInfoService;
     @Autowired
