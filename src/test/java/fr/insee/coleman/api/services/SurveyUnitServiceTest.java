@@ -259,7 +259,5 @@ public class SurveyUnitServiceTest {
 
 		Assert.assertEquals(TypeManagementMonitoringInfo.INITLA, actual);
 	}
-
-
 	
 }
