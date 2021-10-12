@@ -49,6 +49,9 @@ import java.util.List;
 @EnableWebSecurity
 public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
+    @Value("${fr.insee.coleman.respondent.role:#{null}}")
+    private String respondentRole;
+
     @Value("${fr.insee.coleman.helpdesk.role:#{null}}")
     private String helpdeskRole;
 
@@ -95,9 +98,14 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 // configuration for Swagger
                 .antMatchers("/swagger-ui.html/**", "/v2/api-docs", "/csrf", "/", "/webjars/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/environnement", "/healthcheck").permitAll()
-                // Autorize GET requests for all roles
+                // Autorize GET requests for all roles except respondent
                 .antMatchers(HttpMethod.GET, "/**")
                 .hasAnyRole(adminRole, helpdeskRole, managerRole, batchRole)
+                // Autorize GET requests for respondent
+                .antMatchers(HttpMethod.GET, "/campaigns/contact/**")
+                .hasAnyRole(respondentRole)
+                .antMatchers(HttpMethod.GET, "/check-habilitation")
+                .hasAnyRole(respondentRole)
                 // Coleman Batch
                 // Autorize Coleman batch to execute POST
                 .antMatchers(HttpMethod.POST, "/campaigns/**/management-monitoring-info")
