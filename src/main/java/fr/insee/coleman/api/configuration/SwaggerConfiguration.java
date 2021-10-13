@@ -1,9 +1,6 @@
 package fr.insee.coleman.api.configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -124,8 +121,12 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public SecurityConfiguration security() {
+
+		Map<String, Object> additionalQueryStringParams=new HashMap<>();
+		additionalQueryStringParams.put("kc_idp_hint","sso-insee");
+
 		if(this.applicationProperties.getMode()==Mode.keycloak)
-			return SecurityConfigurationBuilder.builder().clientId(clientId).realm(realm).scopeSeparator(",").build();
+			return SecurityConfigurationBuilder.builder().clientId(clientId).realm(realm).scopeSeparator(",").additionalQueryStringParams(additionalQueryStringParams).build();
 		else
 			return null;
 	}
