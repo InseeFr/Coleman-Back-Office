@@ -823,8 +823,8 @@ public class RestAuthKeycloakTest {
         simpsons.setCollectionEndDate(newEndDate);
         campaignService.updateCampaign("SIMPSONS2021X00", simpsons);
 
-        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/redirect-unit/contact/A4F2MCB");
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "A4F2MCB", "a");
+        Response resp = given().auth().oauth2(accessToken).when().get("/campaigns/redirect-unit/contact");
         resp.then().statusCode(200).
                 assertThat().body("idUe", is("9300036162000Z"))
                 .assertThat().body("openedCampaignsIds", hasItem("SIMPSONS2021X00"));
