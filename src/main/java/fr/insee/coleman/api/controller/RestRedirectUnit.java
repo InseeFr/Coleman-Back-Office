@@ -32,14 +32,14 @@ public class RestRedirectUnit {
     @GetMapping(value = "/campaigns/redirect-unit/contact", produces = "application/json")
     public RedirectUnit getOpenCampaignsContactsAssociatedByIdec(HttpServletRequest httpRequest) throws RessourceNotFoundException {
 
-            String idec = httpRequest.getRemoteUser();
-            RedirectUnit ru =new RedirectUnit();
-            LOGGER.info("Request redirect-unit with idec : {}", idec);
-            ru.setOpenedCampaignsIds(campaignService.findOpenedCampaignsByIdec(idec));
-            ru.setIdContact(idec);
-            if(ru.getOpenedCampaignsIds().size()>0) {
-                ru.setIdUe(surveyUnitService.findByIdContactAndIdCampaign(idec, ru.getOpenedCampaignsIds().get(0)).getIdSu());
-            }
-            return ru;
+        String idec = httpRequest.getRemoteUser().toUpperCase();
+        RedirectUnit ru = new RedirectUnit();
+        LOGGER.info("Request redirect-unit with idec : {}", idec);
+        ru.setOpenedCampaignsIds(campaignService.findOpenedCampaignsByIdec(idec));
+        ru.setIdContact(idec);
+        if (ru.getOpenedCampaignsIds().size() > 0) {
+            ru.setIdUe(surveyUnitService.findByIdContactAndIdCampaign(idec, ru.getOpenedCampaignsIds().get(0)).getIdSu());
+        }
+        return ru;
     }
 }
