@@ -21,8 +21,6 @@ public interface SurveyUnitRepository extends SurveyUnitRepositoryBasic, SurveyU
 	Page<SurveyUnit> findByIdContactContainingIgnoreCaseOrIdSuContainingIgnoreCaseOrderByIdSuAscCampaignIdAsc(
 			String filter, String filter2, Pageable pageable);
 
-	Optional<SurveyUnit> findById(long id);
-
 	SurveyUnit findByIdSu(String idSu);
 
 	SurveyUnit findByIdSuAndCampaignId(String idSu, String campaignId);
