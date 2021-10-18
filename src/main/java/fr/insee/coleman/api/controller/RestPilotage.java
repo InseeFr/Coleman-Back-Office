@@ -21,6 +21,8 @@ import fr.insee.coleman.api.services.CampaignService;
 import fr.insee.coleman.api.services.SurveyUnitService;
 import fr.insee.coleman.api.services.UserService;
 
+import java.util.Locale;
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class RestPilotage {
@@ -43,7 +45,7 @@ public class RestPilotage {
     private String managerRole;
 
 
-    @GetMapping(value = "/check-habilitation", produces = "application/json")
+    @GetMapping(value = "/api/check-habilitation", produces = "application/json")
     public ResponseEntity<HabilitationDto> checkHabilitation(HttpServletRequest request,
                                                              @RequestParam(value = "id", required = true) String id,
                                                              @RequestParam(value = "role", required = false) String role) {
@@ -51,6 +53,7 @@ public class RestPilotage {
 
         if (role != null && !role.isBlank()) {
             if (role.equals(Constants.REVIEWER) && request.isUserInRole(managerRole)) {
+                LOGGER.info("Check habilitation of reviewer {} for accessing survey-unit {} resulted in true",request.getRemoteUser(),id);
                 resp.setHabilitated(true);
             } else {
                 resp.setHabilitated(false);
@@ -62,8 +65,10 @@ public class RestPilotage {
                 resp.setHabilitated(true);
                 return new ResponseEntity<>(resp, HttpStatus.OK);
             }
-            String idec = request.getRemoteUser();
+            String idec = request.getRemoteUser().toUpperCase();
+
             boolean habilitated = surveyUnitService.checkContact(idec, id);
+            LOGGER.info("Check habilitation of interviewer {} for accessing survey-unit {} resulted in {}",idec,id,habilitated);
             resp.setHabilitated(habilitated);
         }
 

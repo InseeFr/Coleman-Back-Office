@@ -24,8 +24,6 @@ public interface SurveyUnitRepositoryBasic extends JpaRepository<SurveyUnit, Lon
 
 	SurveyUnit findByIdSu(String idSu);
 
-	Optional<SurveyUnit> findById(long id);
-
 	SurveyUnit findByIdSuAndCampaignId(String idSu, String campaignId);
 	
 	SurveyUnit findByIdContactAndCampaignId(String idContact, String campaignId);
