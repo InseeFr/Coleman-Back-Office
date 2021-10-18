@@ -100,9 +100,9 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/environnement", "/healthcheck").permitAll()
                 // Autorize GET requests for respondent
                 .antMatchers(HttpMethod.GET, "/campaigns/redirect-unit/contact/**")
-                .hasAnyRole(respondentRole)
-                .antMatchers(HttpMethod.GET, "/check-habilitation")
-                .hasAnyRole(respondentRole)
+                .hasAnyRole(respondentRole,adminRole)
+                .antMatchers(HttpMethod.GET, "/api/check-habilitation")
+                .hasAnyRole(respondentRole,managerRole,adminRole)
                 // Autorize GET requests for all roles except respondent
                 .antMatchers(HttpMethod.GET, "/**")
                 .hasAnyRole(adminRole, helpdeskRole, managerRole, batchRole)
@@ -115,7 +115,7 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 // Autorize manager to create and update campaigns
                 .antMatchers(HttpMethod.POST, "/campaigns").hasRole(adminRole)
                 .antMatchers(HttpMethod.PUT, "/campaigns/**").hasRole(adminRole)
-                .antMatchers(HttpMethod.DELETE, "/campaigns/**").hasAnyRole(adminRole, managerRole)
+                .antMatchers(HttpMethod.DELETE, "/campaigns/**").hasAnyRole(adminRole)
                 .antMatchers(HttpMethod.DELETE, "/management-monitoring-infos/**").hasAnyRole(adminRole, managerRole)
                 .antMatchers(HttpMethod.DELETE, "/uploads/**").hasAnyRole(adminRole, managerRole)
                 .antMatchers(HttpMethod.POST, "/campaigns/**/uploads").hasAnyRole(adminRole, managerRole)

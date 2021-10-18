@@ -102,10 +102,6 @@ public class SurveyUnitService {
 				.collect(Collectors.toList());
 	}
 
-	public Optional<SurveyUnit> findById(long id) {
-		return surveyUnitRepository.findById(id);
-	}
-
 	public SurveyUnit findByIdSurveyUnitAndIdCampaign(String idSu, String idCampaign) {
 
 		return surveyUnitRepository.findByIdSuAndCampaignId(idSu, idCampaign);
@@ -154,18 +150,12 @@ public class SurveyUnitService {
 	}
 
 	public boolean checkContact(String idContact, String id) {
-		Long longVal = null;
-		try {
-			longVal = Long.parseLong(id);
-		}
-		catch(NumberFormatException e) {
-			return false;
-		}
-		Optional<SurveyUnit> su = findById(longVal);
-		if(!su.isPresent()) {
+
+		SurveyUnit su = findByIdSu(id);
+		if(su==null) {
 			return false;
 		}
 		
-		return su.get().getIdContact() != null && su.get().getIdContact().equals(idContact);
+		return su.getIdContact() != null && su.getIdContact().equals(idContact);
 	}
 }
