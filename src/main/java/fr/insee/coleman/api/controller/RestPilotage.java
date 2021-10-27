@@ -48,12 +48,13 @@ public class RestPilotage {
     @GetMapping(value = "/api/check-habilitation", produces = "application/json")
     public ResponseEntity<HabilitationDto> checkHabilitation(HttpServletRequest request,
                                                              @RequestParam(value = "id", required = true) String id,
-                                                             @RequestParam(value = "role", required = false) String role) {
+                                                             @RequestParam(value = "role", required = false) String role,
+                                                             @RequestParam(value = "campaign", required = true) String campaign) {
         HabilitationDto resp = new HabilitationDto();
 
         if (role != null && !role.isBlank()) {
             if (role.equals(Constants.REVIEWER) && request.isUserInRole(managerRole)) {
-                LOGGER.info("Check habilitation of reviewer {} for accessing survey-unit {} resulted in true",request.getRemoteUser(),id);
+                LOGGER.info("Check habilitation of reviewer {} for accessing survey-unit {} of campaign {} resulted in true",request.getRemoteUser(),id,campaign);
                 resp.setHabilitated(true);
             } else {
                 resp.setHabilitated(false);
@@ -67,8 +68,8 @@ public class RestPilotage {
             }
             String idec = request.getRemoteUser().toUpperCase();
 
-            boolean habilitated = surveyUnitService.checkContact(idec, id);
-            LOGGER.info("Check habilitation of interviewer {} for accessing survey-unit {} resulted in {}",idec,id,habilitated);
+            boolean habilitated = surveyUnitService.checkContact(id, idec,campaign);
+            LOGGER.info("Check habilitation of interviewer {} for accessing survey-unit {} of campaign {} resulted in {}",idec,id,campaign,habilitated);
             resp.setHabilitated(habilitated);
         }
 
