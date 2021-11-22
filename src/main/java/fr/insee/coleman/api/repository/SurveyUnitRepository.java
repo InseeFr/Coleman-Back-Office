@@ -27,6 +27,8 @@ public interface SurveyUnitRepository extends SurveyUnitRepositoryBasic, SurveyU
 
 	SurveyUnit findByIdContactAndCampaignId(String idContact, String campaignId);
 
+	SurveyUnit findByIdSuAndIdContactAndCampaignId(String idSu, String idContact, String campaignId);
+
 	Collection<SurveyUnit> findByBatchNumber(int numLot);
 
 	List<ExtractionRow> getSurveyUnitToFollowUp(String idCampaign);

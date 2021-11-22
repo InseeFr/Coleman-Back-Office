@@ -28,134 +28,140 @@ import fr.insee.coleman.api.repository.SurveyUnitRepository;
 public class SurveyUnitService {
 
     @Autowired
-	ManagementMonitoringInfoService managementMonitoringInfoService;
+    ManagementMonitoringInfoService managementMonitoringInfoService;
 
-	@Autowired
-	CampaignService campaignService;
+    @Autowired
+    CampaignService campaignService;
 
-	@Autowired
-	CampaignRepository campaignRepository;
+    @Autowired
+    CampaignRepository campaignRepository;
 
-	@Autowired
-	SurveyUnitRepository surveyUnitRepository;
+    @Autowired
+    SurveyUnitRepository surveyUnitRepository;
 
-	public ResultUpload initializeSurveyUnits(String idCampaign, List<SurveyUnitDto> sus) {
-		// check and retrieval of the campaign
-		Campaign campaign = campaignRepository.findById(idCampaign)
-				.orElseThrow(() -> new RessourceNotFoundException("Campaign", idCampaign));
-		ResultUpload result = new ResultUpload();
-		for (SurveyUnitDto su : sus) {
-			try {
-				intitializeSurveyUnits(campaign, su);
-				result.addIdOk(su.getIdSu());
-			} catch (DuplicateResourceException e) {
-				result.addIdKo(su.getIdSu(), "RessourceInDouble");
-			}
-		}
-		return result;
-	}
-	
-	public Collection<SurveyUnit> findMultipleByIdContact(String idec){
-		return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrderByIdContactAscCampaignIdAsc(idec);
-	}
+    public ResultUpload initializeSurveyUnits(String idCampaign, List<SurveyUnitDto> sus) {
+        // check and retrieval of the campaign
+        Campaign campaign = campaignRepository.findById(idCampaign)
+                .orElseThrow(() -> new RessourceNotFoundException("Campaign", idCampaign));
+        ResultUpload result = new ResultUpload();
+        for (SurveyUnitDto su : sus) {
+            try {
+                intitializeSurveyUnits(campaign, su);
+                result.addIdOk(su.getIdSu());
+            } catch (DuplicateResourceException e) {
+                result.addIdKo(su.getIdSu(), "RessourceInDouble");
+            }
+        }
+        return result;
+    }
 
-	private void intitializeSurveyUnits(Campaign campaign, SurveyUnitDto su) {
-		String idCampaign = campaign.getId();
-		if (surveyUnitRepository.findByIdContactAndCampaignId(su.getIdContact(), idCampaign) != null
-				|| surveyUnitRepository.findByIdSuAndCampaignId(su.getIdSu(), idCampaign) != null)
-			throw new DuplicateResourceException("survey unit", su.getIdContact() + " " + su.getIdSu());
-		SurveyUnit suSearched = surveyUnitRepository.saveAndFlush(new SurveyUnit(su.getIdSu(), null, su.getIdContact(),
-				su.getLastname(), su.getFirstname(), su.getAddress(), su.getBatchNumber(), campaign));
-		Date date = new Date();
-		managementMonitoringInfoService.saveAndFlush(new ManagementMonitoringInfo(null, suSearched, TypeManagementMonitoringInfo.INITLA, date.getTime(), null));
-	}
+    public Collection<SurveyUnit> findMultipleByIdContact(String idec) {
+        return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrderByIdContactAscCampaignIdAsc(idec);
+    }
 
-	public Collection<ExtractionRow> getSurveyUnitsToFollowUp(String idCampaign) {
-		return surveyUnitRepository.getSurveyUnitToFollowUp(idCampaign);
-	}
+    private void intitializeSurveyUnits(Campaign campaign, SurveyUnitDto su) {
+        String idCampaign = campaign.getId();
+        if (surveyUnitRepository.findByIdContactAndCampaignId(su.getIdContact(), idCampaign) != null
+                || surveyUnitRepository.findByIdSuAndCampaignId(su.getIdSu(), idCampaign) != null)
+            throw new DuplicateResourceException("survey unit", su.getIdContact() + " " + su.getIdSu());
+        SurveyUnit suSearched = surveyUnitRepository.saveAndFlush(new SurveyUnit(su.getIdSu(), null, su.getIdContact(),
+                su.getLastname(), su.getFirstname(), su.getAddress(), su.getBatchNumber(), campaign));
+        Date date = new Date();
+        managementMonitoringInfoService.saveAndFlush(new ManagementMonitoringInfo(null, suSearched, TypeManagementMonitoringInfo.INITLA, date.getTime(), null));
+    }
 
-	public TypeManagementMonitoringInfo determineState(SurveyUnit su) {
-		HashSet<TypeManagementMonitoringInfo> states = new HashSet<>();
-		for (ManagementMonitoringInfo isg : managementMonitoringInfoService.findBySurveyUnit(su)) {
-			states.add(isg.getStatus());
-		}
-		if (states.contains(TypeManagementMonitoringInfo.REFUSAL)) {
-			return TypeManagementMonitoringInfo.REFUSAL;
-		} else if (states.contains(TypeManagementMonitoringInfo.VALINT)) {
-			return TypeManagementMonitoringInfo.VALINT;
-		} else if (states.contains(TypeManagementMonitoringInfo.VALPAP)) {
-			return TypeManagementMonitoringInfo.VALPAP;
-		} else if (states.contains(TypeManagementMonitoringInfo.HC)) {
-			return TypeManagementMonitoringInfo.HC;
-		} else if (states.contains(TypeManagementMonitoringInfo.PARTIELINT)) {
-			return TypeManagementMonitoringInfo.PARTIELINT;
-		} else if (states.contains(TypeManagementMonitoringInfo.WASTE)) {
-			return TypeManagementMonitoringInfo.WASTE;
-		} else if (states.contains(TypeManagementMonitoringInfo.PND)) {
-			return TypeManagementMonitoringInfo.PND;
-		}
-		return TypeManagementMonitoringInfo.INITLA;
-	}
+    public Collection<ExtractionRow> getSurveyUnitsToFollowUp(String idCampaign) {
+        return surveyUnitRepository.getSurveyUnitToFollowUp(idCampaign);
+    }
 
-	public List<TypeManagementMonitoringInfo> getStatesList(SurveyUnit su) {
-		return managementMonitoringInfoService.findBySurveyUnit(su).stream().map(ManagementMonitoringInfo::getStatus)
-				.collect(Collectors.toList());
-	}
+    public TypeManagementMonitoringInfo determineState(SurveyUnit su) {
+        HashSet<TypeManagementMonitoringInfo> states = new HashSet<>();
+        for (ManagementMonitoringInfo isg : managementMonitoringInfoService.findBySurveyUnit(su)) {
+            states.add(isg.getStatus());
+        }
+        if (states.contains(TypeManagementMonitoringInfo.REFUSAL)) {
+            return TypeManagementMonitoringInfo.REFUSAL;
+        } else if (states.contains(TypeManagementMonitoringInfo.VALINT)) {
+            return TypeManagementMonitoringInfo.VALINT;
+        } else if (states.contains(TypeManagementMonitoringInfo.VALPAP)) {
+            return TypeManagementMonitoringInfo.VALPAP;
+        } else if (states.contains(TypeManagementMonitoringInfo.HC)) {
+            return TypeManagementMonitoringInfo.HC;
+        } else if (states.contains(TypeManagementMonitoringInfo.PARTIELINT)) {
+            return TypeManagementMonitoringInfo.PARTIELINT;
+        } else if (states.contains(TypeManagementMonitoringInfo.WASTE)) {
+            return TypeManagementMonitoringInfo.WASTE;
+        } else if (states.contains(TypeManagementMonitoringInfo.PND)) {
+            return TypeManagementMonitoringInfo.PND;
+        }
+        return TypeManagementMonitoringInfo.INITLA;
+    }
 
-	public SurveyUnit findByIdSurveyUnitAndIdCampaign(String idSu, String idCampaign) {
+    public List<TypeManagementMonitoringInfo> getStatesList(SurveyUnit su) {
+        return managementMonitoringInfoService.findBySurveyUnit(su).stream().map(ManagementMonitoringInfo::getStatus)
+                .collect(Collectors.toList());
+    }
 
-		return surveyUnitRepository.findByIdSuAndCampaignId(idSu, idCampaign);
-	}
+    public SurveyUnit findByIdSurveyUnitAndIdCampaign(String idSu, String idCampaign) {
 
-	public SurveyUnit findByIdContactAndIdCampaign(String idContact, String idCampaign) {
+        return surveyUnitRepository.findByIdSuAndCampaignId(idSu, idCampaign);
+    }
 
-		return surveyUnitRepository.findByIdContactAndCampaignId(idContact, idCampaign);
-	}
+    public SurveyUnit findByIdContactAndIdCampaign(String idContact, String idCampaign) {
 
-	public SurveyUnit findByIdSu(String idSu) {
-		return surveyUnitRepository.findByIdSu(idSu);
-	}
+        return surveyUnitRepository.findByIdContactAndCampaignId(idContact, idCampaign);
+    }
 
-	public SurveyUnit findByIdContact(String idContact) {
-		return surveyUnitRepository.findByIdContact(idContact);
-	}
+    public SurveyUnit findByIdSuAndIdContactAndCampaignId(String idSu, String idContact, String idCampaign) {
 
-	public Collection<SurveyUnit> findByBatchNumber(int numLot) {
-		return surveyUnitRepository.findByBatchNumber(numLot);
-	}
+        return surveyUnitRepository.findByIdSuAndIdContactAndCampaignId(idSu, idContact, idCampaign);
+    }
 
-	public Page<SurveyUnit> searchSurveyUnitByIdWithFilter(String filter, String filter2, Pageable pageable) {
-		return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrIdSuContainingIgnoreCaseOrderByIdSuAscCampaignIdAsc(
-				filter, filter2, pageable);
-	}
+    public SurveyUnit findByIdSu(String idSu) {
+        return surveyUnitRepository.findByIdSu(idSu);
+    }
 
-	public Page<SurveyUnit> searchSurveyUnitByIdWithFilterByIdContact(String filter, Pageable pageable) {
-		return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrderByIdContactAscCampaignIdAsc(filter, pageable);
-	}
+    public SurveyUnit findByIdContact(String idContact) {
+        return surveyUnitRepository.findByIdContact(idContact);
+    }
 
-	public List<SurveyUnit> findAllSurveyUnits() {
-		return surveyUnitRepository.findAll();
-	}
+    public Collection<SurveyUnit> findByBatchNumber(int numLot) {
+        return surveyUnitRepository.findByBatchNumber(numLot);
+    }
 
-	public SurveyUnit saveAndFlush(SurveyUnit ue) {
-		return surveyUnitRepository.saveAndFlush(ue);
-	}
+    public Page<SurveyUnit> searchSurveyUnitByIdWithFilter(String filter, String filter2, Pageable pageable) {
+        return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrIdSuContainingIgnoreCaseOrderByIdSuAscCampaignIdAsc(
+                filter, filter2, pageable);
+    }
 
-	public void deleteByCampaignId(String idCampaign) {
-		List<SurveyUnit> suToDelete = surveyUnitRepository.findByCampaignId(idCampaign);
-		List<ManagementMonitoringInfo> mmToDelete = suToDelete.stream().map(su -> managementMonitoringInfoService.findBySurveyUnit(su))
-				.flatMap(Collection::stream).collect(Collectors.toList());
+    public Page<SurveyUnit> searchSurveyUnitByIdWithFilterByIdContact(String filter, Pageable pageable) {
+        return surveyUnitRepository.findByIdContactContainingIgnoreCaseOrderByIdContactAscCampaignIdAsc(filter, pageable);
+    }
+
+    public List<SurveyUnit> findAllSurveyUnits() {
+        return surveyUnitRepository.findAll();
+    }
+
+    public SurveyUnit saveAndFlush(SurveyUnit ue) {
+        return surveyUnitRepository.saveAndFlush(ue);
+    }
+
+    public void deleteByCampaignId(String idCampaign) {
+        List<SurveyUnit> suToDelete = surveyUnitRepository.findByCampaignId(idCampaign);
+        List<ManagementMonitoringInfo> mmToDelete = suToDelete.stream().map(su -> managementMonitoringInfoService.findBySurveyUnit(su))
+                .flatMap(Collection::stream).collect(Collectors.toList());
         managementMonitoringInfoService.deleteAll(mmToDelete);
-		surveyUnitRepository.deleteAll(suToDelete);
-	}
+        surveyUnitRepository.deleteAll(suToDelete);
+    }
 
-	public boolean checkContact(String idContact, String id) {
+    public boolean checkContact(String idSu, String idContact,String campaignId) {
 
-		SurveyUnit su = findByIdSu(id);
-		if(su==null) {
-			return false;
-		}
-		
-		return su.getIdContact() != null && su.getIdContact().equals(idContact);
-	}
+        SurveyUnit su = findByIdSuAndIdContactAndCampaignId(idSu, idContact, campaignId);
+        if (su == null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
 }

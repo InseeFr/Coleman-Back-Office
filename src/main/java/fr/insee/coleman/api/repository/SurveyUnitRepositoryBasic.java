@@ -28,6 +28,8 @@ public interface SurveyUnitRepositoryBasic extends JpaRepository<SurveyUnit, Lon
 	
 	SurveyUnit findByIdContactAndCampaignId(String idContact, String campaignId);
 
+	SurveyUnit findByIdSuAndIdContactAndCampaignId(String idSu, String idContact, String campaignId);
+
 	Collection<SurveyUnit> findByBatchNumber(int numLot);
 	
 }
