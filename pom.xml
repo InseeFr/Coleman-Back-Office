@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>fr.insee.coleman.api</groupId>
 	<artifactId>coleman-back-office</artifactId>
-	<version>0.11.6</version>
+	<version>0.11.7</version>
 	<packaging>war</packaging>
 	<name>coleman-back-office</name>
 	<description>Back-office services for Coleman</description>
@@ -22,7 +22,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<jdk.version>1.11</jdk.version>
 		<java.version>1.11</java.version>
-		<log4j2.version>2.16.0</log4j2.version>
+		<log4j2.version>2.17.0</log4j2.version>
 		<maven.compiler.release>11</maven.compiler.release>
 		<testcontainers.version>1.15.2</testcontainers.version>
 	</properties>
