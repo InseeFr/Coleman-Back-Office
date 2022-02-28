@@ -369,7 +369,7 @@ public class RestAuthKeycloakTest {
         ManagementMonitoringInfoDto managementMonitoringInfoDto = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto.setIdSu("1100001761000Z");
         managementMonitoringInfoDto.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto.setDate("23-06-2021");
+        managementMonitoringInfoDto.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto.setStatus(TypeManagementMonitoringInfo.FOLLOWUP);
         given()
                 .auth().oauth2(accessToken)
@@ -397,12 +397,12 @@ public class RestAuthKeycloakTest {
         ManagementMonitoringInfoDto managementMonitoringInfoDto1 = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto1.setIdSu("1100001761000Z");
         managementMonitoringInfoDto1.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto1.setDate("23-06-2021");
+        managementMonitoringInfoDto1.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto1.setStatus(TypeManagementMonitoringInfo.REFUSAL);
         ManagementMonitoringInfoDto managementMonitoringInfoDto2 = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto2.setIdSu("1100001761000Z");
         managementMonitoringInfoDto2.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto2.setDate("23-06-2021");
+        managementMonitoringInfoDto2.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto2.setStatus(TypeManagementMonitoringInfo.REFUSAL);
         given()
                 .auth().oauth2(accessToken)
