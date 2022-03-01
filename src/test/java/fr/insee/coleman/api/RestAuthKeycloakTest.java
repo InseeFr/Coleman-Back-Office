@@ -318,7 +318,7 @@ public class RestAuthKeycloakTest {
                 .and().assertThat().body("surveyUnit.campaign.id", equalTo("SIMPSONS2021X00"))
                 .and().assertThat().body("surveyUnit.campaign.label", equalTo("Survey on the Simpsons tv show 2021"))
                 .and().assertThat().body("surveyUnit.campaign.collectionStartDate", equalTo(1605909600000L))
-                .and().assertThat().body("surveyUnit.campaign.collectionEndDate", equalTo(1640995199000L))
+                .and().assertThat().body("surveyUnit.campaign.collectionEndDate", equalTo(1740740816000L))
                 .and().assertThat().body("surveyUnit.firstName", equalTo("JACQUES"))
                 .and().assertThat().body("surveyUnit.idSu", equalTo("7400000751000Z"))
                 .and().assertThat().body("status", equalTo("INITLA"))
@@ -347,7 +347,7 @@ public class RestAuthKeycloakTest {
                 .and().assertThat().body("datas[0].surveyUnit.campaign.id", equalTo("SIMPSONS2021X00"))
                 .and().assertThat().body("datas[0].surveyUnit.campaign.label", equalTo("Survey on the Simpsons tv show 2021"))
                 .and().assertThat().body("datas[0].surveyUnit.campaign.collectionStartDate", equalTo(1605909600000L))
-                .and().assertThat().body("datas[0].surveyUnit.campaign.collectionEndDate", equalTo(1640995199000L))
+                .and().assertThat().body("datas[0].surveyUnit.campaign.collectionEndDate", equalTo(1740740816000L))
                 .and().assertThat().body("datas[0].surveyUnit.firstName", equalTo("CHLOE"))
                 .and().assertThat().body("datas[0].surveyUnit.idSu", equalTo("9300036162000Z"))
                 .and().assertThat().body("datas[0].status", equalTo("INITLA"))
@@ -369,7 +369,7 @@ public class RestAuthKeycloakTest {
         ManagementMonitoringInfoDto managementMonitoringInfoDto = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto.setIdSu("1100001761000Z");
         managementMonitoringInfoDto.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto.setDate("23/06/2021");
+        managementMonitoringInfoDto.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto.setStatus(TypeManagementMonitoringInfo.FOLLOWUP);
         given()
                 .auth().oauth2(accessToken)
@@ -397,12 +397,12 @@ public class RestAuthKeycloakTest {
         ManagementMonitoringInfoDto managementMonitoringInfoDto1 = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto1.setIdSu("1100001761000Z");
         managementMonitoringInfoDto1.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto1.setDate("23/06/2021");
+        managementMonitoringInfoDto1.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto1.setStatus(TypeManagementMonitoringInfo.REFUSAL);
         ManagementMonitoringInfoDto managementMonitoringInfoDto2 = new ManagementMonitoringInfoDto();
         managementMonitoringInfoDto2.setIdSu("1100001761000Z");
         managementMonitoringInfoDto2.setIdContact("A4F2MCB");
-        managementMonitoringInfoDto2.setDate("23/06/2021");
+        managementMonitoringInfoDto2.setDate("23-06-2021 00:00");
         managementMonitoringInfoDto2.setStatus(TypeManagementMonitoringInfo.REFUSAL);
         given()
                 .auth().oauth2(accessToken)
