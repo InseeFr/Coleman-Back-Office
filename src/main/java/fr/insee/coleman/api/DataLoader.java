@@ -69,11 +69,11 @@ public class DataLoader implements ApplicationRunner {
 	
 			// Creating campaigns
 			campaignService.save(
-					new Campaign("SIMPSONS2021X00","Survey on the Simpsons tv show 2021", 1605909600000l, 1640995199000l));
+					new Campaign("SIMPSONS2021X00","Survey on the Simpsons tv show 2021", 1605909600000l, 1740740816000l));
 			campaignService.save(
-					new Campaign("VQS2021X00","Everyday life and health survey 2021", 1605909600000l, 1640995199000l));
+					new Campaign("VQS2021X00","Everyday life and health survey 2021", 1605909600000l, 1740740816000l));
 			campaignService.save(
-					new Campaign("SIMPSONS2022X00","Survey on the Simpsons tv show 2022", 1605909600000l, 1607644799000l));
+					new Campaign("SIMPSONS2022X00","Survey on the Simpsons tv show 2022", 1605909600000l, 1740740816000l));
 	
 			// Test files names
 			String smallInitSampleInputFileName = "sample-recette-small-init.csv";
