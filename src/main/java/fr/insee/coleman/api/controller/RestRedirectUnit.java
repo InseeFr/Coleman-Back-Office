@@ -31,7 +31,7 @@ public class RestRedirectUnit {
 
     @GetMapping(value = "/campaigns/redirect-unit/contact", produces = "application/json")
     public RedirectUnit getOpenCampaignsContactsAssociatedByIdec(HttpServletRequest httpRequest) throws RessourceNotFoundException {
-
+        
         String idec = httpRequest.getRemoteUser().toUpperCase();
         RedirectUnit ru = new RedirectUnit();
         LOGGER.info("Request redirect-unit with idec : {}", idec);
