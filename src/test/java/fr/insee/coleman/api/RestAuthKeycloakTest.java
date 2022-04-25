@@ -814,7 +814,7 @@ public class RestAuthKeycloakTest {
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
         given().auth().oauth2(accessToken).when().get("/campaigns/ongoing/SIMPSONS2021X00")
                 .then().statusCode(200)
-                .and().assertThat().body("ongoing", equalTo("false"));
+                .and().assertThat().body("ongoing", equalTo("true"));
 
     }
 
