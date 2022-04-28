@@ -62,7 +62,7 @@ public class RestCampaign {
 		return campaignService.findContactByIdec(idec);
 	}
 
-	@GetMapping(value = "/campaigns/ongoing/{idCampaign}", produces = "application/json")
+	@GetMapping(value = "/campaigns/{idCampaign}/ongoing", produces = "application/json")
 	public ResponseEntity<OngoingDTO> isOngoingCampaign(@PathVariable String idCampaign) throws RessourceNotFoundException {
 		LOGGER.info("Request GET with campaign id : {}", idCampaign);
 		return campaignService.isOngoing(idCampaign);
