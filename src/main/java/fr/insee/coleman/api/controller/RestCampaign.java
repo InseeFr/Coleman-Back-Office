@@ -2,6 +2,7 @@ package fr.insee.coleman.api.controller;
 
 import fr.insee.coleman.api.configuration.JSONCollectionWrapper;
 import fr.insee.coleman.api.domain.Campaign;
+import fr.insee.coleman.api.dto.campaign.OngoingDTO;
 import fr.insee.coleman.api.exception.RessourceNotFoundException;
 import fr.insee.coleman.api.exception.RessourceNotValidatedException;
 import fr.insee.coleman.api.services.CampaignService;
@@ -59,6 +60,12 @@ public class RestCampaign {
 	public List<Campaign> getCampaignsContactsAssociatedByIdec(@PathVariable String idec) throws RessourceNotFoundException {
 		LOGGER.info("Request GET with idec : {}", idec);
 		return campaignService.findContactByIdec(idec);
+	}
+
+	@GetMapping(value = "/campaigns/{idCampaign}/ongoing", produces = "application/json")
+	public ResponseEntity<OngoingDTO> isOngoingCampaign(@PathVariable String idCampaign) throws RessourceNotFoundException {
+		LOGGER.info("Request GET with campaign id : {}", idCampaign);
+		return campaignService.isOngoing(idCampaign);
 	}
 
 
