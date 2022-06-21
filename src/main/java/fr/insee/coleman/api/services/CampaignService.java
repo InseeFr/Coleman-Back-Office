@@ -1,13 +1,17 @@
 package fr.insee.coleman.api.services;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import fr.insee.coleman.api.dto.campaign.OngoingDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import fr.insee.coleman.api.domain.Campaign;
@@ -98,4 +102,20 @@ public class CampaignService {
 
 	}
 
+    public ResponseEntity<OngoingDTO> isOngoing(String idCampaign) {
+		OngoingDTO ongoing = new OngoingDTO();
+		ongoing.setOngoing(false);
+		Campaign campaign = campaignRepository.findById(idCampaign)
+				.orElseThrow(() -> new RessourceNotFoundException("Campaign", idCampaign));
+
+		if(campaign.getCollectionEndDate() > Instant.now().toEpochMilli() && campaign.getCollectionStartDate() < Instant.now().toEpochMilli()){
+			LOGGER.info("campaign {} is ongoing",campaign.getId());
+			ongoing.setOngoing(true);
+		}else{
+			LOGGER.info("campaign {} is closed",campaign.getId());
+			ongoing.setOngoing(false);
+		}
+
+		return new ResponseEntity<>(ongoing, HttpStatus.OK);
+    }
 }
