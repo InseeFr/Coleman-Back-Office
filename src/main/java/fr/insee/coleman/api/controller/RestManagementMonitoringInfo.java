@@ -1,23 +1,7 @@
 package fr.insee.coleman.api.controller;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import fr.insee.coleman.api.configuration.JSONCollectionWrapper;
-import fr.insee.coleman.api.domain.ManagementMonitoringInfo;
-import fr.insee.coleman.api.domain.ResultUpload;
+import fr.insee.coleman.api.domain.*;
 import fr.insee.coleman.api.dto.managementmonitoringinfo.ManagementMonitoringInfoDto;
 import fr.insee.coleman.api.exception.DuplicateResourceException;
 import fr.insee.coleman.api.exception.RessourceNotFoundException;
@@ -26,6 +10,15 @@ import fr.insee.coleman.api.services.CampaignService;
 import fr.insee.coleman.api.services.ManagementMonitoringInfoService;
 import fr.insee.coleman.api.services.SurveyUnitService;
 import fr.insee.coleman.api.services.UploadService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -87,6 +80,67 @@ public class RestManagementMonitoringInfo {
 
 		return new JSONCollectionWrapper<>(
 				managementMonitoringInfoService.findBySurveyUnit(surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu, idCampaign)));
+	}
+
+
+	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/state", produces = "application/json")
+	public ResponseEntity<String> getStateByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
+													   @PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
+		LOGGER.info("Request State for survey-unit n° {}, campaign n° {}", idSu, idCampaign);
+
+		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu,idCampaign);
+
+		if (su == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("survey unit not found for this campaign or campaign not found");
+		}
+
+		Optional<TypeManagementMonitoringInfo> state = managementMonitoringInfoService.getState(su);
+		if(!state.isPresent()){
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body((state.get()).name());
+
+	}
+
+
+	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/isToFollowUp", produces = "application/json")
+	public ResponseEntity<?> getIsToFollowUpByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
+															@PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
+		LOGGER.info("Check if survey-unit n° {}, campaign n° {} is eligible to followUp", idSu, idCampaign);
+
+		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu,idCampaign);
+
+		if (su == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("survey unit not found for this campaign or campaign not found");
+		}
+
+		Optional<TypeManagementMonitoringInfo> state = managementMonitoringInfoService.getState(su);
+		if(!state.isPresent()){
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state) ? false : true );
+	}
+
+
+	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/isToExtract", produces = "application/json")
+	public ResponseEntity<?> getIsToExtractByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
+															@PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
+		LOGGER.info("Check if survey-unit n° {}, campaign n° {} is eligible for extraction", idSu, idCampaign);
+
+		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu,idCampaign);
+
+		if (su == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("survey unit not found for this campaign or campaign not found");
+		}
+
+
+		Optional<TypeManagementMonitoringInfo> state = managementMonitoringInfoService.getState(su);
+		if(!state.isPresent()){
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(Arrays.stream(ExtractManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state) ? true : false );
+
 	}
 
 	// Check MMI that can be deleted

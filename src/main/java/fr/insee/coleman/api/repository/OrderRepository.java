@@ -8,4 +8,5 @@ import fr.insee.coleman.api.domain.Order;
 @Service
 public interface OrderRepository extends JpaRepository<Order, String> {
 
+    Order findByStatus(String status);
 }
