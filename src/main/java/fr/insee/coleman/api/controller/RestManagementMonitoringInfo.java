@@ -122,6 +122,7 @@ public class RestManagementMonitoringInfo {
 		if(!state.isPresent()){
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
 		}
+
 		EligibleDto eligibleDto =new EligibleDto();
 		if (Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state)) {
 			eligibleDto.setEligible("false");

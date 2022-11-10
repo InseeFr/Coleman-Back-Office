@@ -16,8 +16,19 @@ public class StatusOrderComparator implements Comparator<TypeManagementMonitorin
 
     @Override
     public int compare(TypeManagementMonitoringInfo o1, TypeManagementMonitoringInfo o2) {
-        Order eventOrder1 = orderService.findByStatus(o1.toString());
-        Order eventOrder2 = orderService.findByStatus(o2.toString());
+        Order followUp=new Order(Long.parseLong("0"), TypeManagementMonitoringInfo.FOLLOWUP.toString(), 0);
+        Order eventOrder1=new Order();
+        Order eventOrder2=new Order();
+        if(o1.toString()==TypeManagementMonitoringInfo.FOLLOWUP.toString()) {
+            eventOrder1 = followUp;
+        }else{
+            eventOrder1 = orderService.findByStatus(o1.toString());
+        }
+        if(o2.toString()==TypeManagementMonitoringInfo.FOLLOWUP.toString()) {
+            eventOrder2 = followUp;
+        }else{
+            eventOrder2 = orderService.findByStatus(o2.toString());
+        }
 
         return Integer.compare(eventOrder2.getOrder(), eventOrder1.getOrder());
     }
