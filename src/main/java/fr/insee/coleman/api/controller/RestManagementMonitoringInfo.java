@@ -124,7 +124,7 @@ public class RestManagementMonitoringInfo {
 		}
 
 		EligibleDto eligibleDto =new EligibleDto();
-		if (Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state)) {
+		if (Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).anyMatch((t) -> t.name().equals(state.get().name()))) {
 			eligibleDto.setEligible("false");
 		} else {
 			eligibleDto.setEligible("true");
