@@ -115,6 +115,8 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .hasAnyRole(adminRole, webclientRole, batchRole, managerRole)
                 .antMatchers(HttpMethod.POST, "/campaigns/**/management-monitoring-infos").hasAnyRole(adminRole, webclientRole, batchRole)
                 .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units").hasAnyRole(adminRole, webclientRole, batchRole)
+                //Authorize POST FollowUp
+                .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units/**/follow-up").hasAnyRole(adminRole, webclientRole)
                 // Autorize manager to create and update campaigns
                 .antMatchers(HttpMethod.POST, "/campaigns").hasAnyRole(adminRole, webclientRole)
                 .antMatchers(HttpMethod.PUT, "/campaigns/**").hasAnyRole(adminRole, webclientRole)

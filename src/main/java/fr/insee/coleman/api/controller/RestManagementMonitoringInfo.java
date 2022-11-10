@@ -133,6 +133,23 @@ public class RestManagementMonitoringInfo {
 		return ResponseEntity.status(HttpStatus.OK).body(eligibleDto);
 	}
 
+	@PostMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/follow-up", produces = "application/json")
+	public ResponseEntity<?> postFollowUpByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
+																	 @PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
+		LOGGER.info("Post Follow Up Status survey-unit n° {}, campaign n° {} ", idSu, idCampaign);
+
+		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu,idCampaign);
+
+		if (su == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("survey unit not found for this campaign or campaign not found");
+		}
+
+		Date date = new Date();
+		managementMonitoringInfoService.saveAndFlush(new ManagementMonitoringInfo(null, su, TypeManagementMonitoringInfo.FOLLOWUP, date.getTime(), null));
+
+		return ResponseEntity.status(HttpStatus.OK).body("Follow up status added");
+	}
+
 
 	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/extract", produces = "application/json")
 	public ResponseEntity<?> getIsToExtractByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
