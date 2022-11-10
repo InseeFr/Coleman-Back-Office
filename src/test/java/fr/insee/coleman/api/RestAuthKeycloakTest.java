@@ -821,7 +821,7 @@ public class RestAuthKeycloakTest {
     void testIsToExtractSurveyUnit() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z/extract")
                 .then().statusCode(200)
                 .and().assertThat().body("eligible", equalTo("true"));
     }
@@ -830,7 +830,7 @@ public class RestAuthKeycloakTest {
     void testIsNotToExtractSurveyUnit() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z/extract")
                 .then().statusCode(200)
                 .and().assertThat().body("eligible", equalTo("false"));
     }
@@ -839,7 +839,7 @@ public class RestAuthKeycloakTest {
     void testIsToFollowSurveyUnit() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z/follow-up")
                 .then().statusCode(200)
                 .and().assertThat().body("eligible", equalTo("true"));
     }
@@ -848,9 +848,18 @@ public class RestAuthKeycloakTest {
     void testIsNotToFollowSurveyUnit() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z/follow-up")
                 .then().statusCode(200)
                 .and().assertThat().body("eligible", equalTo("false"));
+    }
+    @Test
+    @Order(31)
+    void getState() throws Exception {
+        RestAssured.port = port;
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100001761000Z/state")
+                .then().statusCode(200)
+                .and().assertThat().body("state", equalTo("VALINT"));
     }
 
     //TODO  FIX TEST
