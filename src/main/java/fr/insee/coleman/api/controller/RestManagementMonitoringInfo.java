@@ -2,7 +2,9 @@ package fr.insee.coleman.api.controller;
 
 import fr.insee.coleman.api.configuration.JSONCollectionWrapper;
 import fr.insee.coleman.api.domain.*;
+import fr.insee.coleman.api.dto.managementmonitoringinfo.EligibleDto;
 import fr.insee.coleman.api.dto.managementmonitoringinfo.ManagementMonitoringInfoDto;
+import fr.insee.coleman.api.dto.managementmonitoringinfo.StateDto;
 import fr.insee.coleman.api.exception.DuplicateResourceException;
 import fr.insee.coleman.api.exception.RessourceNotFoundException;
 import fr.insee.coleman.api.exception.RessourceNotValidatedException;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.nimbus.State;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,8 +87,8 @@ public class RestManagementMonitoringInfo {
 
 
 	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/state", produces = "application/json")
-	public ResponseEntity<String> getStateByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
-													   @PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
+	public ResponseEntity<?> getStateByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
+																  @PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
 		LOGGER.info("Request State for survey-unit n° {}, campaign n° {}", idSu, idCampaign);
 
 		SurveyUnit su = surveyUnitService.findByIdSurveyUnitAndIdCampaign(idSu,idCampaign);
@@ -98,12 +101,13 @@ public class RestManagementMonitoringInfo {
 		if(!state.isPresent()){
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body((state.get()).name());
-
+		StateDto stateDto = new StateDto();
+		stateDto.setState(state.get().name());
+		return ResponseEntity.status(HttpStatus.OK).body(stateDto);
 	}
 
 
-	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/isToFollowUp", produces = "application/json")
+	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/follow-up", produces = "application/json")
 	public ResponseEntity<?> getIsToFollowUpByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
 															@PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
 		LOGGER.info("Check if survey-unit n° {}, campaign n° {} is eligible to followUp", idSu, idCampaign);
@@ -118,12 +122,18 @@ public class RestManagementMonitoringInfo {
 		if(!state.isPresent()){
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
 		}
+		EligibleDto eligibleDto =new EligibleDto();
+		if (Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state)) {
+			eligibleDto.setEligible("false");
+		} else {
+			eligibleDto.setEligible("true");
+		}
 
-		return ResponseEntity.status(HttpStatus.OK).body(Arrays.stream(NoFollowUpManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state) ? false : true );
+		return ResponseEntity.status(HttpStatus.OK).body(eligibleDto);
 	}
 
 
-	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/isToExtract", produces = "application/json")
+	@GetMapping(value = "/campaigns/{idCampaign}/survey-units/{idSu}/extract", produces = "application/json")
 	public ResponseEntity<?> getIsToExtractByIdCampaignBySurveyUnit(@PathVariable("idSu") String idSu,
 															@PathVariable("idCampaign") String idCampaign) throws RessourceNotFoundException {
 		LOGGER.info("Check if survey-unit n° {}, campaign n° {} is eligible for extraction", idSu, idCampaign);
@@ -139,7 +149,14 @@ public class RestManagementMonitoringInfo {
 		if(!state.isPresent()){
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(Arrays.stream(ExtractManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state) ? true : false );
+		EligibleDto eligibleDto =new EligibleDto();
+		if (Arrays.stream(ExtractManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state)) {
+			eligibleDto.setEligible("true");
+		} else {
+			eligibleDto.setEligible("false");
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(eligibleDto);
 
 	}
 

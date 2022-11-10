@@ -816,6 +816,42 @@ public class RestAuthKeycloakTest {
                 .then().statusCode(200)
                 .and().assertThat().body("ongoing", equalTo(Boolean.TRUE));
     }
+    @Test
+    @Order(27)
+    void testIsToExtractSurveyUnit() throws Exception {
+        RestAssured.port = port;
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z")
+                .then().statusCode(200)
+                .and().assertThat().body("eligible", equalTo("true"));
+    }
+    @Test
+    @Order(28)
+    void testIsNotToExtractSurveyUnit() throws Exception {
+        RestAssured.port = port;
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z")
+                .then().statusCode(200)
+                .and().assertThat().body("eligible", equalTo("false"));
+    }
+    @Test
+    @Order(29)
+    void testIsToFollowSurveyUnit() throws Exception {
+        RestAssured.port = port;
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/9300036162000Z")
+                .then().statusCode(200)
+                .and().assertThat().body("eligible", equalTo("true"));
+    }
+    @Test
+    @Order(30)
+    void testIsNotToFollowSurveyUnit() throws Exception {
+        RestAssured.port = port;
+        String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100002861000Z")
+                .then().statusCode(200)
+                .and().assertThat().body("eligible", equalTo("false"));
+    }
 
     //TODO  FIX TEST
 //    @Test
