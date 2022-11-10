@@ -812,7 +812,7 @@ public class RestAuthKeycloakTest {
     void testIsNotOngoingCampaign() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2022X00/ongoing")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/ongoing")
                 .then().statusCode(200)
                 .and().assertThat().body("ongoing", equalTo(Boolean.TRUE));
     }
@@ -857,7 +857,7 @@ public class RestAuthKeycloakTest {
     void getState() throws Exception {
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2021X00/survey-units/1100001761000Z/state")
+        given().auth().oauth2(accessToken).when().get("/campaigns/SIMPSONS2022X00/survey-units/1100001761000Z/state")
                 .then().statusCode(200)
                 .and().assertThat().body("state", equalTo("VALINT"));
     }
