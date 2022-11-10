@@ -151,7 +151,8 @@ public class RestManagementMonitoringInfo {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("no state found in database");
 		}
 		EligibleDto eligibleDto =new EligibleDto();
-		if (Arrays.stream(ExtractManagementMonitoringInfos.values()).collect(Collectors.toList()).contains(state)) {
+
+		if (Arrays.stream(ExtractManagementMonitoringInfos.values()).anyMatch((t) -> t.name().equals(state.get().name()))){
 			eligibleDto.setEligible("true");
 		} else {
 			eligibleDto.setEligible("false");
