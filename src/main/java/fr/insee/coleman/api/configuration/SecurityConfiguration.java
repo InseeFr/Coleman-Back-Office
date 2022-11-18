@@ -58,6 +58,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Value("${fr.insee.coleman.admin.role:#{null}}")
 	private String adminRole;
+	
+	@Value("${fr.insee.coleman.webclient.role:#{null}}")
+	private String webclientRole;
 
 	/**
 	 * This method check if environment is development or test
@@ -100,6 +103,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        .antMatchers(HttpMethod.DELETE, "/management-monitoring-infos/**").hasAnyRole(adminRole, managerRole)
 	        .antMatchers(HttpMethod.DELETE, "/uploads/**").hasAnyRole(adminRole, managerRole)
 	        .antMatchers(HttpMethod.POST, "/campaigns/**/uploads").hasAnyRole(adminRole, managerRole)
+	        // Autorize admin and web client to send mail
+	        .antMatchers(HttpMethod.POST, "/contact/send-mail").hasAnyRole(adminRole, webclientRole)
 	        .anyRequest().denyAll(); // refuse all other requests
 		}else{
 			http.httpBasic().disable();

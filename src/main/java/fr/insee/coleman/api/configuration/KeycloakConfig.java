@@ -63,6 +63,9 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Value("${fr.insee.coleman.admin.role:#{null}}")
     private String adminRole;
+    
+    @Value("${fr.insee.coleman.webclient.role:#{null}}")
+    private String webclientRole;
 
     @Value("${fr.insee.coleman.token.claim.role:#{null}}")
     private String otherClaimRole;
@@ -119,6 +122,8 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/management-monitoring-infos/**").hasAnyRole(adminRole, managerRole)
                 .antMatchers(HttpMethod.DELETE, "/uploads/**").hasAnyRole(adminRole, managerRole)
                 .antMatchers(HttpMethod.POST, "/campaigns/**/uploads").hasAnyRole(adminRole, managerRole)
+                // Autorize admin and web client to send mail
+                .antMatchers(HttpMethod.POST, "/contact/send-mail").hasAnyRole(adminRole, webclientRole)
                 .anyRequest().denyAll(); // refuse all other requests
     }
 
