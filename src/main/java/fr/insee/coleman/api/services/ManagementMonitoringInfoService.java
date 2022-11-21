@@ -1,9 +1,9 @@
 package fr.insee.coleman.api.services;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import fr.insee.coleman.api.utils.StatusOrderComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +29,9 @@ public class ManagementMonitoringInfoService {
 
 	@Autowired
 	ManagementMonitoringInfoRepository managementMonitoringInfoRepository;
+
+	@Autowired
+	StatusOrderComparator statusOrderComparator;
 
 	public ManagementMonitoringInfo saveIhm(String idCampaign, ManagementMonitoringInfoDto managementMonitoringInfoDto, Upload up) {
 		SurveyUnit su = null;
@@ -146,4 +149,10 @@ public class ManagementMonitoringInfoService {
 		return managementMonitoringInfoRepository.saveAndFlush(mm);
 	}
 
+	public Optional<TypeManagementMonitoringInfo> getState(SurveyUnit su) {
+		Collection<ManagementMonitoringInfo> mmis = managementMonitoringInfoRepository.findBySurveyUnit(su);
+		List<TypeManagementMonitoringInfo> mmiStatusList = mmis.stream().map(ManagementMonitoringInfo::getStatus).collect(Collectors.toList());
+		Collections.sort(mmiStatusList, statusOrderComparator);
+		return  mmiStatusList.stream().findFirst();
+	}
 }

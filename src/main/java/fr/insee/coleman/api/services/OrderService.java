@@ -19,5 +19,8 @@ public class OrderService {
 	public Order saveAndFlush(Order order) {
 		return orderRepository.saveAndFlush(order);
 	}
-	
+
+	public Order findByStatus(String status) {
+		return orderRepository.findByStatus(status);
+	}
 }

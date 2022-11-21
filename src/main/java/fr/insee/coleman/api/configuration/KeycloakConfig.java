@@ -103,27 +103,27 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/environnement", "/healthcheck").permitAll()
                 // Autorize GET requests for respondent
                 .antMatchers(HttpMethod.GET, "/campaigns/redirect-unit/contact/**")
-                .hasAnyRole(respondentRole,adminRole)
+                .hasAnyRole(respondentRole,adminRole, webclientRole)
                 .antMatchers(HttpMethod.GET, "/api/check-habilitation")
-                .hasAnyRole(respondentRole,managerRole,adminRole)
+                .hasAnyRole(respondentRole,managerRole,adminRole, webclientRole)
                 // Autorize GET requests for all roles except respondent
                 .antMatchers(HttpMethod.GET, "/**")
-                .hasAnyRole(adminRole, helpdeskRole, managerRole, batchRole)
+                .hasAnyRole(adminRole, webclientRole, helpdeskRole, managerRole, batchRole)
                 // Coleman Batch
                 // Autorize Coleman batch to execute POST
                 .antMatchers(HttpMethod.POST, "/campaigns/**/management-monitoring-info")
-                .hasAnyRole(adminRole, batchRole, managerRole)
-                .antMatchers(HttpMethod.POST, "/campaigns/**/management-monitoring-infos").hasAnyRole(adminRole, batchRole)
-                .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units").hasAnyRole(adminRole, batchRole)
+                .hasAnyRole(adminRole, webclientRole, batchRole, managerRole)
+                .antMatchers(HttpMethod.POST, "/campaigns/**/management-monitoring-infos").hasAnyRole(adminRole, webclientRole, batchRole)
+                .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units").hasAnyRole(adminRole, webclientRole, batchRole)
+                //Authorize POST FollowUp
+                .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units/**/follow-up").hasAnyRole(adminRole, webclientRole)
                 // Autorize manager to create and update campaigns
-                .antMatchers(HttpMethod.POST, "/campaigns").hasRole(adminRole)
-                .antMatchers(HttpMethod.PUT, "/campaigns/**").hasRole(adminRole)
-                .antMatchers(HttpMethod.DELETE, "/campaigns/**").hasAnyRole(adminRole)
-                .antMatchers(HttpMethod.DELETE, "/management-monitoring-infos/**").hasAnyRole(adminRole, managerRole)
-                .antMatchers(HttpMethod.DELETE, "/uploads/**").hasAnyRole(adminRole, managerRole)
-                .antMatchers(HttpMethod.POST, "/campaigns/**/uploads").hasAnyRole(adminRole, managerRole)
-                // Autorize admin and web client to send mail
-                .antMatchers(HttpMethod.POST, "/contact/send-mail").hasAnyRole(adminRole, webclientRole)
+                .antMatchers(HttpMethod.POST, "/campaigns").hasAnyRole(adminRole, webclientRole)
+                .antMatchers(HttpMethod.PUT, "/campaigns/**").hasAnyRole(adminRole, webclientRole)
+                .antMatchers(HttpMethod.DELETE, "/campaigns/**").hasAnyRole(adminRole, webclientRole)
+                .antMatchers(HttpMethod.DELETE, "/management-monitoring-infos/**").hasAnyRole(adminRole, webclientRole, managerRole)
+                .antMatchers(HttpMethod.DELETE, "/uploads/**").hasAnyRole(adminRole, webclientRole, managerRole)
+                .antMatchers(HttpMethod.POST, "/campaigns/**/uploads").hasAnyRole(adminRole, webclientRole, managerRole)
                 .anyRequest().denyAll(); // refuse all other requests
     }
 
