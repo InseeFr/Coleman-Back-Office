@@ -1,6 +1,5 @@
 package fr.insee.coleman.api.services;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,6 +19,8 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -41,18 +42,18 @@ public class SendMailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendMailService.class);
 
-    @Value("${fr.insee.coleman.spoc.healthcheck}")
-    private String spocHeathcheck;
+    @Value("${fr.insee.coleman.mail.service.healthcheck}")
+    private String mailServiceHeathcheck;
 
-    @Value("${fr.insee.coleman.spoc.url}")
-    private String spocUrl;
+    @Value("${fr.insee.coleman.mail.service.url}")
+    private String mailServiceUrl;
 
-    @Value("${fr.insee.coleman.spoc.login}")
-    private String spocLogin;
+    @Value("${fr.insee.coleman.mail.service.login}")
+    private String mailServiceLogin;
 
-    @Value("${fr.insee.coleman.spoc.pw}")
-    private String spocPw;
-
+    @Value("${fr.insee.coleman.mail.service.pw}")
+    private String mailServicePw;
+   
     private static final String REGEX_MAIL = "^([a-zA-Z0-9_]+([\\.-]{1}[a-zA-Z0-9_]+)*@[a-zA-Z0-9]+([\\.-]{1}[a-zA-Z0-9]+)*\\.[a-zA-Z]{2,})?$";
 
     public ResponseFromExternalService sendMail(FreeFollowUpMailDto mailFollowUp) {
@@ -80,7 +81,7 @@ public class SendMailService {
         }
 
         //Vérification du service d'envoi de mail
-        if ( !testHealthCheckSpoc())
+        if ( !testHealthCheckMailService())
         {
             responseExt.setStatus(HttpStatus.SERVICE_UNAVAILABLE);
             responseExt.setMessage("Le service d'envoi de mail ne répond pas.");
@@ -91,7 +92,7 @@ public class SendMailService {
         //envoi du mail
         try {
             LOGGER.info("Envoi du mail...");
-            String response = spocInstance().request().post(Entity.entity(sendRequest, MediaType.APPLICATION_XML), String.class);
+            String response = mailServiceInstance().request().post(Entity.entity(sendRequest, MediaType.APPLICATION_XML), String.class);
             LOGGER.info("Reponse du WS d'envoi de mail : " + response);
             responseExt.setStatus(HttpStatus.OK);
             String msg = "Le mail a bien été envoyé à l'adresse : " + sendRequest.getRecipients().getRecipient().get(0).getAddress() + ".";
@@ -112,9 +113,11 @@ public class SendMailService {
         LOGGER.info("Création du message...");
 
         MessageTemplate messageTemplate = new MessageTemplate();
-
-        File file = new File("src/main/resources/mailTemplates/Mail_relancelibreWeb.html");
-        messageTemplate.setContent(FileUtils.readFileToString(file, "UTF-8"));
+        
+        
+        Resource resource = new ClassPathResource(
+            "mailTemplates/Mail_relancelibreWeb.html");
+        messageTemplate.setContent(FileUtils.readFileToString(resource.getFile(), "UTF-8"));
         messageTemplate.setSender(mailFollowUp.getData().getMailBoiteRetour());
         messageTemplate.setSubject(mailFollowUp.getData().getMailObjet());
 
@@ -228,26 +231,26 @@ public class SendMailService {
     }
 
     /**
-     * Appel au HealthCheck de Spoc
+     * Appel au HealthCheck de MailService
      * @return true or false
      */
-    private boolean testHealthCheckSpoc() {
-        URI uri = setUri(spocHeathcheck);
+    private boolean testHealthCheckMailService() {
+        URI uri = setUri(mailServiceHeathcheck);
         boolean response;
         ResponseEntity<String> coucou;
 
         try {
-            LOGGER.info("Checking SPOC...");
+            LOGGER.info("Checking Mail...");
             coucou = restTemplate().getForEntity(uri, String.class);
             response = coucou.getStatusCode().equals(HttpStatus.OK);
         }
         catch (RestClientException e) {
             response = false;
-            LOGGER.info("Service SPOC : ERROR");
+            LOGGER.info("Service Mail : ERROR");
             LOGGER.error(e.getMessage());
         }
         if (response) {
-            LOGGER.info("Service SPOC : OK");
+            LOGGER.info("Service Mail : OK");
         }
         return response;
     }
@@ -268,14 +271,14 @@ public class SendMailService {
         return new RestTemplate(requestFactory);
     }
 
-    private WebTarget spocInstance() {
+    private WebTarget mailServiceInstance() {
         Client client = ClientBuilder.newClient();
         client.property(ClientProperties.CONNECT_TIMEOUT, 15000); // 15 sec tiemout
         client.property(ClientProperties.READ_TIMEOUT, 15000); // 15 sec tiemout
 
-        /* creation d'un client authentifié pour SPOC */
-        HttpAuthenticationFeature authentificationFeature = HttpAuthenticationFeature.basic(spocLogin, spocPw);
-        WebTarget webTarget = client.target(spocUrl).register(authentificationFeature).register(MultiPartFeature.class);
+        /* creation d'un client authentifié pour Mail */
+        HttpAuthenticationFeature authentificationFeature = HttpAuthenticationFeature.basic(mailServiceLogin, mailServicePw);
+        WebTarget webTarget = client.target(mailServiceUrl).register(authentificationFeature).register(MultiPartFeature.class);
 
         return webTarget;
 
