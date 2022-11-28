@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import fr.insee.coleman.api.exception.RessourceNotValidatedException;
+
 
 @Service
 public class MailControlService {
@@ -35,6 +37,9 @@ public class MailControlService {
 
 	@Value("${fr.insee.coleman.ldap.externe.domaineGestion}")
 	public String serviceContactDomain;
+	
+	@Value("${fr.insee.coleman.ldap.externe.domaineGestion.rp}")
+	public String serviceContactDomainRp;
 
 	public ResponseEntity<String> getMail(String idContact) {
 
@@ -42,13 +47,14 @@ public class MailControlService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		StringBuilder url = new StringBuilder(serviceContactBaseUrl);
-		url.append(":");
-		url.append(serviceContactPort); 
-		url.append("/annuaire/");
-		url.append(serviceContactDomain);
-		url.append("/contact/");
-		url.append(idContact);
+		StringBuilder url;
+                try {
+                    url = buildUrl(idContact);
+                }
+                catch (RessourceNotValidatedException e1) {
+                    LOGGER.error("Length of idContact {}  is not valid (7 or 8 only)", idContact);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Length of idContact is not valid (7 or 8 only)");
+                }
 		String plainCreds = serviceContactLogin + ":" + serviceContactPassword;
 		String encodedString = Base64.getEncoder().encodeToString(plainCreds.getBytes());
 
@@ -79,5 +85,20 @@ public class MailControlService {
 		return ResponseEntity.ok().body(email);
 
 	}
+
+    private StringBuilder buildUrl(String idContact) throws RessourceNotValidatedException {
+        StringBuilder url = new StringBuilder(serviceContactBaseUrl);
+		url.append(":");
+		url.append(serviceContactPort); 
+		url.append("/annuaire/");
+		if(idContact.length()==7)
+		    url.append(serviceContactDomain);
+		else if(idContact.length()==8)
+	            url.append(serviceContactDomainRp);
+		else throw new RessourceNotValidatedException("idContact", idContact);
+		url.append("/contact/");
+		url.append(idContact);
+        return url;
+    }
 
 }
