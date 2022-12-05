@@ -38,8 +38,8 @@ public class MailControlService {
 	@Value("${fr.insee.coleman.ldap.externe.domaineGestion}")
 	public String serviceContactDomain;
 	
-	@Value("${fr.insee.coleman.ldap.externe.domaineGestion.rp}")
-	public String serviceContactDomainRp;
+	@Value("${fr.insee.coleman.ldap.externe.domaineGestion.alt}")
+	public String serviceContactDomainAlt;
 
 	public ResponseEntity<String> getMail(String idContact) {
 
@@ -94,7 +94,7 @@ public class MailControlService {
 		if(idContact.length()==7)
 		    url.append(serviceContactDomain);
 		else if(idContact.length()==8)
-	            url.append(serviceContactDomainRp);
+	            url.append(serviceContactDomainAlt);
 		else throw new RessourceNotValidatedException("idContact", idContact);
 		url.append("/contact/");
 		url.append(idContact);
