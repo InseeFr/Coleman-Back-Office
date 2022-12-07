@@ -26,7 +26,7 @@ public class RestContact {
 			@ApiResponse(code = 500, message = "An error has occured.") })
 	@GetMapping("/contact/{idContact}/mail")
 	public ResponseEntity<String> mailConsultation(@PathVariable String idContact) {
-		LOGGER.info("GET mail for contact with id" + idContact);
+		LOGGER.info("GET mail for contact with id " + idContact);
 		return mailControlService.getMail(idContact);
 
 	}
