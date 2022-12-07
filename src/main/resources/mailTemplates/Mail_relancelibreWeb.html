@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+		<title>$Mail_Objet</title> <!-- Titre de la page HMTL -->
+		<meta name="GENERATOR" content="LibreOffice 4.0.6.2 (Windows)">
+
+
+	</head>
+	<body lang="fr-FR" dir="LTR">
+		
+		<table width="100%"> <!--Cadre général du mail -->
+			
+			<tr>
+				<td>
+					
+					<table width="100%" cellpadding="4" cellspacing="0" style="border: none;"> <!-- Entête avec les logos -->
+						<tr valign="TOP" style="max-height:0px;"> <!-- Cette ligne est présente pour afficher du contenu dans l'aperçu de courrier et non les balises des imgs -->
+							<td style="display:none !important;visibility:hidden;
+								mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;
+								opacity:0;overflow:hidden;">
+							       
+							</td>
+						</tr>
+						<tr valign="TOP" style="height:120px">
+							<td width="80%" style="padding: 0cm">
+								<img src="https://static.insee.fr/static/img/Republique_Francaise_CMJN.jpg" alt="Logo de la République Française - Marianne" style="margin-left: 1em; font-size: 1em; color: #0F417A; max-height: 120px;" height="120">
+							</td>
+							<td width="10%" style="padding: 0cm"/>
+							<th:block th:if="{$Enq_Prestataire=='oui'}">
+							<td width="10%" style="padding: 0cm">
+								<img src="https://static.insee.fr/static/img/$Enq_LogoPrestataire" alt="Logo Prestataire" style="font-size: 1em; color: #0F417A; max-height: 120px; margin-left: 1em;" height="120">
+							</td>
+							</th:block>
+							<td width="10%" style="padding: 0cm">
+								<img src="https://static.insee.fr/static/img/Logo_Insee_Signaturedessous.jpg" alt="Logo de l'Insee" style="font-size: 1em; color: #0F417A; max-height: 120px; margin-left: 1em;" height="120">
+							</td>
+							<td width="10%" style="padding: 0cm">
+								<img src="https://static.insee.fr/static/img/Logo_Statistique_Publique_sans_marge.jpg" alt="Logo de la statistique publique" style="font-size: 1em; color: #0F417A; max-height: 120px; margin-left: 1em;" height="120">
+							</td>
+						</tr>
+						<tr>
+							<td>
+					    &nbsp;   
+					</td>
+						</tr>
+					</table>
+					<table width="100%" bgcolor="#0F417A"> <!-- Phrase introductive -->
+						<tr>
+							<td width="1%" style="border: none;">
+								&nbsp;
+							</td>
+							
+							<td width="98%" align="center" valign="middle" style="border: none;font-size: 1.3em;	font-family:Arial,Helvetica,sans-serif;color:#FFFFFF; ">
+								<br>
+									Mieux connaître $Enq_ThemeMieuxConnaitreMail <span style="font-weight: bold; color: #FFC400">grâce à vous</span>					
+									<br><br>
+							</td>
+							<td width="1%" style="border: none;">
+								&nbsp;
+							</td>
+						</tr>
+					</table>
+					
+					<table width="100%" bgcolor="#F7F7F7">  <!-- Corps du texte du mail-->
+						<tr>
+							<td width="4%" style="border: none;">
+								&nbsp;
+							</td>
+							<td width="92%" style="border: none;font-size: 1em;	font-family:Arial,Helvetica,sans-serif;Line-Height: 1.5;">
+								<br>
+						Madame, Monsieur,				
+						<br>
+						<br>
+						$Enq_RelanceLibreMailParagraphe1
+						<br>
+						<br>
+						$Enq_RelanceLibreMailParagraphe2
+						<br>
+						<br>
+						Votre participation à cette enquête est essentielle pour permettre la prise en compte de la diversité des situations.
+						<br>
+						<br>
+						<span style="font-weight : bold">
+						Pour répondre, </span> la procédure est simple et sécurisée :
+						<br>
+						<br>
+						
+								
+					</td>
+					<td width="4%" style="border: none;">
+					&nbsp;
+					</td>
+				</tr>
+			</table>
+			
+			<table width="100%" bgcolor="#F7F7F7">  <!-- encadré de connexion -->
+				
+				<tr>
+					<td width="10%" style="border: none;">
+					&nbsp;
+					</td>
+					<td width="80%" bgcolor="#FFFFFF" style="border:3px solid  #E0E0E0;vertical-align: middle ;line-height: 22px;">
+						
+						<table bgcolor="#FFFFFF" width="100%" border="0" cellpadding="0" cellspacing="0"> <!--  style = "border-collapse: collapse;encadré de connexion -->
+							<tr bgcolor="#3467AE" style="color:#FFFFFF;border-collapse: collapse; ">
+								<td width="1%" style="border-collapse: collapse;">
+								&nbsp;
+								</td>
+								<td width="2%" style="border-collapse: collapse;" nowrap="nowrap">
+									<span style="font-weight:bold ;color:#FFFFFF"> 
+									<br>
+									 => 
+									<br>
+									<br>
+									<br> 
+									<br>
+									</span> 
+								</td>
+								<td width="1%" style="border-collapse: collapse; ">
+								&nbsp;
+								</td>
+								<td width="94%" style="border-collapse: collapse;font-size: 1em;font-family:Arial,Helvetica,sans-serif;color:#FFFFFF">
+									<span style="line-height: 22px;color:#FFFFFF">
+									<br>
+									Cliquez sur le lien suivant pour accéder à l'enquête en ligne : 								
+									<br>
+									<br>
+									<a href="$Enq_UrlEnquete" style="text-decoration: none;color:#FFFFFF;display:block;width=100%">
+									<span style="font-weight:bold;text-decoration:underline">
+									$Enq_UrlEnquete
+									</span>
+									</a>
+									<br> 
+									<br>
+									</span>
+									
+								</td>
+								<td width="2%" style="border-collapse: collapse;">
+								&nbsp;
+								</td>
+							</tr>
+
+							<tr bgcolor="#FFFFFF">
+								<td width="1%" style="border: none;">
+								&nbsp;
+								</td>
+								<td width="2%" style="border: none; font-size: 1em;font-weight:bold;font-family:Arial,Helvetica,sans-serif; color:#0F417A;" nowrap="nowrap">
+									
+									=> 
+									<br>
+									<br>
+									
+								
+								</td>
+								<td width="1%" style="border: none;">
+								&nbsp;
+								</td>
+								<td width="94%" style="border: none;font-size: 1em;	font-family:Arial,Helvetica,sans-serif; color:#0F417A"><!--nowrap="nowrap"-->
+									<span style="line-height: 22px;">
+									<br>
+									Saisissez votre <span style="font-weight:bold">identifiant : $Ue_CalcIdentifiant </span><br>
+									et votre mot de passe. Si vous l’avez perdu, vous pouvez le renouveler en ligne en cliquant sur le lien
+									<a href="$Enq_UrlEnquete/assistance">"Mot de passe oublié ?"</a>. </span> 
+									<br>
+									<br>
+								
+									
+								</td>
+								<td width="2%" style="border: none;">
+								&nbsp;
+								</td>
+							</tr>
+							<tr bgcolor="#FFFFFF">
+								<td width="1%" style="border: none;">
+								&nbsp;
+								</td>
+								<td width="2%" style="border: none; font-size: 1em;font-weight:bold;font-family:Arial,Helvetica,sans-serif; color:#0F417A;" nowrap="nowrap">
+									=> 
+									<br>
+								</td>
+								<td width="1%" style="border: none;">
+								&nbsp;
+								</td>
+								<td width="94%" style="border: none;font-size: 1em;	font-family:Arial,Helvetica,sans-serif; color:#0F417A"> <!--nowrap="nowrap"-->
+									<span style="line-height: 22px;">
+									<br>Validez votre questionnaire pour qu'il nous soit transmis.
+									<br><br>
+									</span>
+								</td>
+								<td width="2%" style="border: none;">
+								&nbsp;
+								</td>
+							</tr>
+						</table>
+	
+					</td>
+					<td width="10%" style="border: none;">
+					</td>
+				</tr>
+			</table>
+
+			<table width="100%" bgcolor="#F7F7F7">  <!-- Contact et remerciements-->
+				<tr>
+					<td width="4%" style="border: none;">
+					&nbsp;
+					</td>
+
+					<td width="92%" style="border: none;font-size: 1em;	font-family:Arial,Helvetica,sans-serif;"> <!--color:#525457"-->	
+						<br>
+						<br>
+						Si vous rencontrez des difficultés, écrivez-nous en utilisant le  
+						
+						<a href="$Enq_UrlEnquete/contacter-assistance">formulaire de contact</a>.
+						<br>
+						<br>
+						Je vous remercie par avance de votre participation. Vos réponses comptent pour la qualité des statistiques. 
+					</td>
+					<td width="4%" style="border: none;">
+					&nbsp;
+					</td>
+				</tr>
+			</table>
+
+			<table width="100%" bgcolor="#F7F7F7">  <!-- Signature-->
+				<tr>
+					<td width="4%" style="border: none;">
+					&nbsp;
+					</td>
+
+					<td width="92%" style="border: none;font-size: 1em;	font-family:Arial,Helvetica,sans-serif;">
+						<br>
+						$Enq_ServiceCollecteurSignataireFonction,
+						<br><br>
+						$Enq_ServiceCollecteurSignataireNom
+						<br><br>
+						<br>
+					
+					</td>
+					<td width="4%" style="border: none;">
+					&nbsp;
+					</td>
+				</tr>
+			</table>
+
+			<table style="border:1; border-top: 2px solid #424242;" width="100%"> <!-- cadre réglementaire cnis -->
+				<tr>
+					<td width="100%" style="font-size:0.8em;	color:#424242; font-family:Arial,Helvetica,sans-serif;line-height:1.5em"> 
+					
+					<span style="font-weight:bold">Les réponses à ce questionnaire sont protégées par le secret statistique </span>
+					et destinées à $Enq_RespTraitement.  
+					<br>
+					Le règlement général 2016/679 du 27 avril 2016 sur la protection des données (RGPD) et la loi n° 78-17 du 6 janvier 1978, relative à l'informatique, aux fichiers et aux libertés, s'appliquent aux réponses faites à la présente enquête. Ils garantissent aux personnes concernées un <span style="font-weight:bold">droit d'accès, de limitation ou de rectification </span>pour les données les concernant.
+					Ce droit peut être exercé auprès de $Enq_RespOperationnel (<a href="mailto:$Enq_MailRespOperationnel">$Enq_MailRespOperationnel</a>).
+					<br>
+					<a href="$Enq_UrlEnquete">En savoir plus</a> sur la gestion de vos données et vos droits.
+
+					
+					</td>
+				</tr>
+			</table>
+			
+		</td>
+	</tr>
+</table>
+
+</body>
+</html>

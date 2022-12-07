@@ -63,7 +63,7 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Value("${fr.insee.coleman.admin.role:#{null}}")
     private String adminRole;
-
+    
     @Value("${fr.insee.coleman.webclient.role:#{null}}")
     private String webclientRole;
 
@@ -117,7 +117,7 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units").hasAnyRole(adminRole, webclientRole, batchRole)
                 //Authorize POST FollowUp
                 .antMatchers(HttpMethod.POST, "/campaigns/**/survey-units/**/follow-up").hasAnyRole(adminRole, webclientRole)
-                // Autorize manager to create and update campaigns
+                .antMatchers(HttpMethod.POST, "/contact/send-mail").hasAnyRole(adminRole, webclientRole)
                 .antMatchers(HttpMethod.POST, "/campaigns").hasAnyRole(adminRole, webclientRole)
                 .antMatchers(HttpMethod.PUT, "/campaigns/**").hasAnyRole(adminRole, webclientRole)
                 .antMatchers(HttpMethod.DELETE, "/campaigns/**").hasAnyRole(adminRole, webclientRole)
