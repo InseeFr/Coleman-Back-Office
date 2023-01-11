@@ -73,7 +73,7 @@ public class MailControlService {
 			if(!HttpStatus.OK.equals(response.getStatusCode())) {
 				return new ResponseEntity<>(response.getStatusCode());
 			}
-			email = object.get("AdresseMessagerie");
+			email = object.get("mail");
 			if (email == null) {
 				LOGGER.info("Contact does not yet have an email");
 				return ResponseEntity.noContent().build();
@@ -90,13 +90,13 @@ public class MailControlService {
         StringBuilder url = new StringBuilder(serviceContactBaseUrl);
 		url.append(":");
 		url.append(serviceContactPort); 
-		url.append("/annuaire/");
+		url.append("/v2/realms/");
 		if(idContact.length()==7)
 		    url.append(serviceContactDomain);
 		else if(idContact.length()==8)
 	            url.append(serviceContactDomainAlt);
 		else throw new RessourceNotValidatedException("idContact", idContact);
-		url.append("/contact/");
+		url.append("storages/default/users/");
 		url.append(idContact);
         return url;
     }
