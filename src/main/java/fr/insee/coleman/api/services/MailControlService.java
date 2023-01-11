@@ -96,7 +96,7 @@ public class MailControlService {
 		else if(idContact.length()==8)
 	            url.append(serviceContactDomainAlt);
 		else throw new RessourceNotValidatedException("idContact", idContact);
-		url.append("storages/default/users/");
+		url.append("/storages/default/users/");
 		url.append(idContact);
         return url;
     }
