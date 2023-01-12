@@ -781,7 +781,7 @@ public class RestAuthKeycloakTest {
     @Test
     @Order(25)
     void testContactMail() throws Exception {
-        String url = "/v2/realms/questionnaire-particuliers/storages/default/users";
+        String url = "/v2/realms/questionnaire-particuliers/storages/default/users/TTTTTTT";
         clientAndServer = ClientAndServer.startClientAndServer(8081);
         mockServerClient = new MockServerClient("127.0.0.1", 8081);
         mockServerClient.when(request().withPath(url))
@@ -799,9 +799,9 @@ public class RestAuthKeycloakTest {
                                 + "}"));
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        Response resp = given().auth().oauth2(accessToken).when().get("/v2/realms/questionnaire-particuliers/storages/default/users/TTTTTTT");
+        Response resp = given().auth().oauth2(accessToken).when().get("/contact/TTTTTTT/mail");
         resp.then().statusCode(200);
-        assertEquals("test@test.com", resp.path("mail"));
+        assertEquals("test@test.com", resp.getBody().asString());
     }
 
     @Test
