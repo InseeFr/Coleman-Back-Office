@@ -781,30 +781,27 @@ public class RestAuthKeycloakTest {
     @Test
     @Order(25)
     void testContactMail() throws Exception {
-        String url = "/annuaire/coleman/contact/TTTTTTT";
+        String url = "/v2/realms/questionnaire-particuliers/storages/default/users";
         clientAndServer = ClientAndServer.startClientAndServer(8081);
         mockServerClient = new MockServerClient("127.0.0.1", 8081);
         mockServerClient.when(request().withPath(url))
                 .respond(response().withStatusCode(200)
                         .withHeaders(new Header("Content-Type", "application/json; charset=utf-8"))
                         .withBody("{"
-                                + " \"Identifiant\" : \"TTTTTTT\","
-                                + " \"NomCommun\" : \"Test\","
-                                + " \"DomaineDeGestion\" : \"TEST\","
-                                + " \"AdresseMessagerie\" : \"test@test.com\","
-                                + " \"MotDePasseExiste\" : true,"
-                                + " \"AdressePostale\" : {"
-                                + "  \"LigneUne\" : \"test\","
-                                + "  \"LigneQuatre\" : \"1 rue du test\","
-                                + "  \"LigneSix\" : \"99999 TEST\""
-                                + " },"
-                                + " \"DateCreation\" : 1574860894000"
+                                + " \"username\" : \"TTTTTTT\","
+                                + " \"lastname\" : \"Test\","
+                                + " \"mail\" : \"test@test.com\","
+                                + " \"address\" : {"
+                                + "  \"line1\" : \"test\","
+                                + "  \"line4\" : \"1 rue du test\","
+                                + "  \"line6\" : \"99999 TEST\""
+                                + " }"
                                 + "}"));
         RestAssured.port = port;
         String accessToken = resourceOwnerLogin(CLIENT, CLIENT_SECRET, "abc", "a");
-        Response resp = given().auth().oauth2(accessToken).when().get("/contact/TTTTTTT/mail");
+        Response resp = given().auth().oauth2(accessToken).when().get("/v2/realms/questionnaire-particuliers/storages/default/users/TTTTTTT");
         resp.then().statusCode(200);
-        assertEquals("test@test.com", resp.getBody().asString());
+        assertEquals("test@test.com", resp.path("mail"));
     }
 
     @Test
