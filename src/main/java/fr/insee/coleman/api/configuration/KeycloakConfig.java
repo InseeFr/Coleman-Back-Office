@@ -171,8 +171,8 @@ public class KeycloakConfig extends KeycloakWebSecurityConfigurerAdapter {
      *
      * @return
      */
-    @ConditionalOnExpression("'${fr.insee.coleman.application.mode}' == 'keycloak'")
     @Bean
+    @ConditionalOnExpression("'${fr.insee.coleman.application.mode}' == 'keycloak'")
     public KeycloakSpringBootConfigResolver keycloakConfigResolver() {
         return new KeycloakSpringBootConfigResolver();
     }
